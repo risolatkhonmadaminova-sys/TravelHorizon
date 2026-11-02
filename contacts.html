@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <meta
+      name="description"
+      content="Talk to TravelHorizon about your Kyrgyzstan journey."
+      data-i18n="meta.contacts"
+    />
+    <title data-i18n="site.contacts.title">Contacts — TravelHorizon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="contacts">
+    <header class="site-header">
+      <a
+        class="wordmark"
+        href="index.html"
+        aria-label="TravelHorizon home"
+        data-i18n-aria="brand.home"
+        ><span class="wordmark-mark">TH</span
+        ><span>Travel<span class="wordmark-light">Horizon</span></span></a
+      ><button
+        class="menu-toggle"
+        type="button"
+        aria-label="Open menu"
+        data-i18n-aria="menu.open"
+        aria-expanded="false"
+        aria-controls="main-nav"
+      >
+        <span></span><span></span>
+      </button>
+      <nav
+        class="main-nav"
+        id="main-nav"
+        aria-label="Main navigation"
+        data-i18n-aria="nav.aria"
+      >
+        <a href="index.html" data-page-link="home" data-i18n="nav.home">Home</a
+        ><a href="tours.html" data-page-link="tours" data-i18n="nav.tours"
+          >Tours</a
+        ><a href="about.html" data-page-link="about" data-i18n="nav.about"
+          >About Us</a
+        ><a
+          href="partners.html"
+          data-page-link="partners"
+          data-i18n="nav.partners"
+          >Partners</a
+        ><a
+          href="experiences.html"
+          data-page-link="experiences"
+          data-i18n="nav.experiences"
+          >Experiences</a
+        ><a
+          href="contacts.html"
+          data-page-link="contacts"
+          data-i18n="nav.contacts"
+          >Contacts</a
+        >
+      </nav>
+      <label class="language-control"
+        ><span class="sr-only" data-i18n="language.label">Language</span
+        ><select
+          id="language-select"
+          aria-label="Choose language"
+          data-i18n-aria="language.label"
+        >
+          <option value="en">EN</option>
+          <option value="ru">RU</option>
+          <option value="ky">KY</option>
+        </select></label
+      ><a class="header-cta" href="#enquiry"
+        ><span data-i18n="nav.plan">Plan a trip</span
+        ><span aria-hidden="true">↗</span></a
+      >
+    </header>
+    <main>
+      <section class="page-intro contact-intro">
+        <p class="eyebrow dark-eyebrow" data-i18n="contacts.kicker">
+          START WITH A HELLO
+        </p>
+        <h1 data-i18n="contacts.title" data-i18n-html="true">
+          Tell us what<br /><em>you’re dreaming of.</em>
+        </h1>
+        <p data-i18n="contacts.intro">
+          A real local will help you find the right way in.
+        </p>
+      </section>
+      <section class="contact-layout section-wrap" id="enquiry">
+        <div class="contact-details">
+          <p class="eyebrow" data-i18n="contacts.details.kicker">
+            TRAVELHORIZON · KYRGYZSTAN
+          </p>
+          <h2 data-i18n="contacts.details.title">Let’s talk travel.</h2>
+          <a class="contact-email" href="mailto:hello@travelhorizon.kg"
+            >hello@travelhorizon.kg <span aria-hidden="true">↗</span></a
+          >
+          <p data-i18n="contacts.location">Bishkek, Kyrgyzstan</p>
+          <div class="contact-coordinate">42°52′ N<br />74°36′ E</div>
+        </div>
+        <form class="contact-form" id="contact-form" data-mailto-form>
+          <label
+            ><span data-i18n="contacts.form.name">Your name</span
+            ><input
+              name="name"
+              autocomplete="name"
+              required
+              placeholder="Name"
+              data-i18n-placeholder="contacts.form.name.placeholder" /></label
+          ><label
+            ><span data-i18n="contacts.form.email">Email address</span
+            ><input
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+              placeholder="you@example.com"
+              data-i18n-placeholder="contacts.form.email.placeholder" /></label
+          ><label
+            ><span data-i18n="contacts.form.tour">Choose your tour</span
+            ><select name="tour" id="tour-select">
+              <option value="" data-i18n="contacts.form.tour.none">
+                Select a tour
+              </option>
+              <option value="ala" data-i18n="trip.ala.title">
+                Ala-Kul &amp; the high trails
+              </option>
+              <option value="song" data-i18n="trip.song.title">
+                Song-Kul, slowly
+              </option>
+              <option value="issyk" data-i18n="trip.issyk.title">
+                The long way around
+              </option>
+              <option value="jyrgalan" data-i18n="trip.jyrgalan.title">
+                Jyrgalan, off the map
+              </option>
+            </select></label
+          ><label
+            ><span data-i18n="contacts.form.travelers">Number of travelers</span
+            ><input
+              id="traveler-count"
+              name="travelers"
+              type="number"
+              min="1"
+              max="20"
+              step="1"
+              value="1"
+              inputmode="numeric"
+              required
+          /></label>
+          <div class="quote-summary" aria-live="polite" aria-atomic="true">
+            <div class="quote-total">
+              <span data-i18n="contacts.form.total">Estimated total</span>
+              <strong id="booking-price">—</strong>
+            </div>
+            <p>
+              <span data-i18n="contacts.form.perperson">Per traveler</span>
+              <span id="price-per-person">—</span>
+            </p>
+            <p class="quote-note" data-i18n="contacts.form.price.note">
+              Starting price in USD. Final price confirmed by our team.
+            </p>
+          </div>
+          <label
+            ><span data-i18n="contacts.form.interest">I’m interested in</span
+            ><select name="interest" id="contact-interest">
+              <option value="general" data-i18n="contacts.form.general">
+                A trip to Kyrgyzstan
+              </option>
+              <option value="partner" data-i18n="contacts.form.partner">
+                Partnering with TravelHorizon
+              </option>
+              <option value="experience" data-i18n="contacts.form.experience">
+                A local experience
+              </option>
+              <option value="horse" data-i18n="experiences.horse.title">
+                On horseback
+              </option>
+              <option value="yurt" data-i18n="experiences.yurt.title">
+                A yurt stay
+              </option>
+              <option value="food" data-i18n="experiences.food.title">
+                Local food
+              </option>
+              <option value="trek" data-i18n="experiences.trek.title">
+                A mountain trek
+              </option>
+            </select></label
+          ><label
+            ><span data-i18n="contacts.form.message"
+              >A little about your plans</span
+            ><textarea
+              name="message"
+              rows="4"
+              placeholder="Dates, questions, or anything else…"
+              data-i18n-placeholder="contacts.form.message.placeholder"
+            ></textarea></label
+          ><button class="button-link form-button" type="submit">
+            <span data-i18n="contacts.form.submit">Open email to send</span
+            ><span aria-hidden="true">↗</span>
+          </button>
+          <p class="form-message" id="form-message" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <a class="wordmark footer-wordmark" href="index.html"
+        ><span class="wordmark-mark">TH</span
+        ><span>Travel<span class="wordmark-light">Horizon</span></span></a
+      >
+      <p data-i18n="footer.note">Made with care in Kyrgyzstan.</p>
+      <div class="footer-links">
+        <a href="mailto:hello@travelhorizon.kg" data-i18n="footer.contact"
+          >Say hello ↗</a
+        ><span data-i18n="footer.copyright">© 2026 TravelHorizon</span>
+      </div>
+    </footer>
+  </body>
+</html>
