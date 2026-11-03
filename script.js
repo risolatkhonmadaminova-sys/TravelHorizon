@@ -1866,8 +1866,8 @@ async function initializeAdminPanel() {
       throw new Error(backendUnavailableMessage);
     }
     const response = await fetch("/api/admin/session");
-    if (response.status === 401) {
-      window.location.replace("/admin.html");
+    if (response.status === 401 || response.status === 503) {
+      window.location.replace("/admin-login.html");
       return;
     }
     if (!response.headers.get("content-type")?.includes("application/json")) {
@@ -2078,6 +2078,32 @@ function initializeAdminLogin() {
   const form = document.querySelector("#admin-login-form");
   const status = document.querySelector("#admin-login-status");
   if (!form || !status) return;
+
+  const controls = [...form.querySelectorAll("input, button")];
+  controls.forEach((control) => {
+    control.disabled = true;
+  });
+  void (async () => {
+    try {
+      const response = await fetch("/api/admin/session");
+      if (response.ok) {
+        window.location.replace("/admin.html");
+        return;
+      }
+      if (response.status === 401) {
+        controls.forEach((control) => {
+          control.disabled = false;
+        });
+        return;
+      }
+      const result = await response.json();
+      status.textContent =
+        result.error || "Admin access is unavailable for this deployment.";
+    } catch (error) {
+      status.textContent = "Could not verify admin access. Please try again later.";
+      console.error("Could not check TravelHorizon admin availability.", error);
+    }
+  })();
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();

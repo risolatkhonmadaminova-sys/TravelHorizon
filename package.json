@@ -11,6 +11,10 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.2",
     "dotenv": "^18.0.9"
+  },
+  "overrides": {
+    "zod": "^4.6.6"
   }
 }

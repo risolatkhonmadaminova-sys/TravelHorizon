@@ -2,26 +2,21 @@
 
 ## Run locally
 
-Requires Node.js 20 or newer. Set an administrator username and a password of
-at least 12 characters in a private `.env` file. Start from the example:
+Requires Node.js 20 or newer. The public website runs without configuration:
 
 ```sh
-cp .env.example .env
-# Replace the placeholder values in .env with your private credentials.
 npm start
 ```
 
-Open <http://localhost:3000>. Choose **Site editor** or visit `/admin.html` to
-open the sign-in page. Enter the configured administrator username and
-password; incorrect credentials do not open the editor. Only a valid
-administrator session can change or restore site content, and the server
-checks that session and a CSRF token again when saving. From the editor you can
-change site text and add, edit, or delete tours and experiences, including
-their prices, translated details, and Wikimedia image/attribution information.
-Changes are shared with site visitors and remain after a restart. Sign out by
-using the admin panel's sign-out button. Do not open the HTML files directly or
-use a static preview such as VS Code Live Server: the editor requires this Node
-backend for sign-in and saving changes.
+Open <http://localhost:3000>. The Admin Panel is disabled until
+`ADMIN_USERNAME` and an `ADMIN_PASSWORD` of at least 12 characters are
+configured in a private `.env` file. Copy `.env.example` and fill those values
+with private credentials if you want to enable it. Only a valid administrator
+session can change or restore site content, and the server checks that session
+and a CSRF token again when saving.
+Changes made with the local Node server are stored in `data/content.json` and
+`data/catalog.json`. Do not open the HTML files directly or use a static
+preview such as VS Code Live Server: API functionality requires the backend.
 
 The credentials are server environment variables and are never sent to the
 browser. Keep them private and do not commit them. Set `PORT` to change the
@@ -52,21 +47,25 @@ The catalog editor accepts HTTPS image URLs from Wikimedia Commons
 license attribution. Follow each license's attribution and share-alike terms
 when reusing an image.
 
-## Deploy securely
+## Deploy to Vercel
 
-Deploy the Node server and site together; serving the HTML files from a separate
-static host bypasses the authentication gate and will not use the shared
-content API. Configure `ADMIN_USERNAME`, `ADMIN_PASSWORD`,
-`TELEGRAM_BOT_TOKEN`, and `TELEGRAM_CHAT_ID` as private environment variables on
-the server. Use HTTPS in production and set
-`NODE_ENV=production` so the admin session cookie is marked `Secure`.
+Deploy the repository root to Vercel. `vercel.json` configures the API function
+and includes the bundled catalog and content JSON files. The public website,
+`/api/content`, and `/api/catalog` work without environment variables.
 
-The server stores text edits in `data/content.json` and managed tours and
-experiences in `data/catalog.json`. Use persistent storage for these files (or
-configure `CONTENT_FILE` and `CATALOG_FILE` to persistent mounted paths). The
-server keeps admin sessions in memory; a restart signs admins out. Configure a
-reverse proxy or platform ingress to provide HTTPS and persistent storage
-before public use.
+Admin editing is disabled unless `ADMIN_USERNAME`, an `ADMIN_PASSWORD` of at
+least 12 characters, and a Vercel Blob read-write token are configured. Create
+a **private** Vercel Blob store and add its `BLOB_READ_WRITE_TOKEN` to the
+project's server-side environment variables. Admin changes are stored in that
+private store while public visitors continue to load content through the API.
+If admin credentials or storage are missing, login and all editing endpoints
+return an error and the browser disables the login form. Local development
+continues to use the JSON files.
+
+Telegram enquiries are optional. Set `TELEGRAM_BOT_TOKEN` and
+`TELEGRAM_CHAT_ID` as private environment variables to enable delivery. If they
+are missing or Telegram is unavailable, the contact form reports the delivery
+failure without affecting the rest of the website.
 
 ## Tests
 

@@ -461,3 +461,168 @@ test("rate limits contact enquiries", async () => {
   assert.equal(throttled.status, 429);
   assert.equal(telegramCalls.length, 5);
 });
+
+test("public APIs work without environment configuration and admin remains disabled", async () => {
+  const application = createApplication({
+    adminUsername: "",
+    adminPassword: "",
+    telegramBotToken: "",
+    telegramChatId: "",
+  });
+  await Promise.all([application.loadContent(), application.loadCatalog()]);
+  const unconfiguredServer = application.server;
+  await new Promise((resolve) =>
+    unconfiguredServer.listen(0, "127.0.0.1", resolve),
+  );
+  const unconfiguredOrigin = `http://127.0.0.1:${unconfiguredServer.address().port}`;
+
+  try {
+    const contentResponse = await fetch(`${unconfiguredOrigin}/api/content`);
+    assert.equal(contentResponse.status, 200);
+    assert.match(contentResponse.headers.get("content-type"), /application\/json/);
+    assert.deepEqual(await contentResponse.json(), {
+      en: {},
+      ru: {},
+      ky: {},
+    });
+
+    const catalogResponse = await fetch(`${unconfiguredOrigin}/api/catalog`);
+    assert.equal(catalogResponse.status, 200);
+    const catalogResult = await catalogResponse.json();
+    assert.ok(Array.isArray(catalogResult.catalog.tours));
+    assert.ok(Array.isArray(catalogResult.catalog.experiences));
+
+    const adminRequests = [
+      ["/api/admin/login", "POST", { username: "admin", password: adminPassword }],
+      ["/api/admin/session", "GET"],
+      ["/api/admin/content", "PUT", { content: contentOverride }],
+      ["/api/admin/catalog", "PUT", { catalog: catalogOverride }],
+      ["/api/admin/logout", "POST"],
+    ];
+    for (const [pathname, method, body] of adminRequests) {
+      const response = await fetch(`${unconfiguredOrigin}${pathname}`, {
+        method,
+        headers: {
+          ...(body ? { "Content-Type": "application/json" } : {}),
+          ...(method !== "GET" ? { Origin: unconfiguredOrigin } : {}),
+        },
+        ...(body ? { body: JSON.stringify(body) } : {}),
+      });
+      assert.equal(response.status, 503, pathname);
+      assert.equal(typeof (await response.json()).error, "string");
+    }
+
+    const contactResponse = await fetch(`${unconfiguredOrigin}/api/contact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: unconfiguredOrigin,
+      },
+      body: JSON.stringify({
+        name: "Aida Example",
+        email: "aida@example.com",
+        travelers: 1,
+        interest: "general",
+      }),
+    });
+    assert.equal(contactResponse.status, 503);
+    assert.equal(typeof (await contactResponse.json()).error, "string");
+  } finally {
+    await new Promise((resolve, reject) =>
+      unconfiguredServer.close((error) =>
+        error ? reject(error) : resolve(),
+      ),
+    );
+  }
+});
+
+test("shared storage and signed admin sessions work across server instances", async () => {
+  const sharedContent = {};
+  const sharedCatalog = JSON.parse(
+    await fs.readFile(path.join(__dirname, "..", "data", "catalog.json"), "utf8"),
+  );
+  const storage = {
+    readContent: async () => sharedContent,
+    readCatalog: async () => sharedCatalog,
+    writeContent: async (value) => Object.assign(sharedContent, value),
+    writeCatalog: async (value) => {
+      sharedCatalog.tours = value.tours;
+      sharedCatalog.experiences = value.experiences;
+    },
+    deleteCatalog: async () => undefined,
+  };
+  const firstApplication = createApplication({
+    adminUsername,
+    adminPassword,
+    storage,
+    telegramBotToken: "",
+    telegramChatId: "",
+  });
+  const secondApplication = createApplication({
+    adminUsername,
+    adminPassword,
+    storage,
+    telegramBotToken: "",
+    telegramChatId: "",
+  });
+  await Promise.all([
+    firstApplication.loadContent(),
+    firstApplication.loadCatalog(),
+    secondApplication.loadContent(),
+    secondApplication.loadCatalog(),
+  ]);
+  const servers = [firstApplication.server, secondApplication.server];
+  const origins = [];
+  for (const applicationServer of servers) {
+    await new Promise((resolve) =>
+      applicationServer.listen(0, "127.0.0.1", resolve),
+    );
+    origins.push(`http://127.0.0.1:${applicationServer.address().port}`);
+  }
+
+  try {
+    const login = await fetch(`${origins[0]}/api/admin/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Origin: origins[0],
+      },
+      body: JSON.stringify({ username: adminUsername, password: adminPassword }),
+    });
+    assert.equal(login.status, 200);
+    const cookie = login.headers.get("set-cookie");
+
+    const session = await fetch(`${origins[1]}/api/admin/session`, {
+      headers: { Cookie: cookie },
+    });
+    assert.equal(session.status, 200);
+    const { csrfToken } = await session.json();
+
+    const save = await fetch(`${origins[1]}/api/admin/content`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookie,
+        Origin: origins[1],
+        "X-CSRF-Token": csrfToken,
+      },
+      body: JSON.stringify({ content: contentOverride }),
+    });
+    assert.equal(save.status, 200);
+    assert.deepEqual(sharedContent, contentOverride);
+
+    const publicContent = await fetch(`${origins[0]}/api/content`);
+    assert.deepEqual(await publicContent.json(), contentOverride);
+  } finally {
+    await Promise.all(
+      servers.map(
+        (applicationServer) =>
+          new Promise((resolve, reject) =>
+            applicationServer.close((error) =>
+              error ? reject(error) : resolve(),
+            ),
+          ),
+      ),
+    );
+  }
+});
