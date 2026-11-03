@@ -254,6 +254,8 @@ const translations = {
     "contacts.form.sent": "Thanks! Your enquiry was sent to our team.",
     "contacts.form.failed":
       "We couldn’t send your enquiry. Please try again in a moment.",
+    "contacts.form.telegramUnavailable":
+      "Telegram contact integration is not configured. Please contact the site owner.",
     "footer.note": "Made with care in Kyrgyzstan.",
     "footer.contact": "Send an enquiry ↗",
     "footer.copyright": "© 2026 TravelHorizon",
@@ -513,6 +515,8 @@ const translations = {
     "contacts.form.sent": "Спасибо! Ваша заявка отправлена нашей команде.",
     "contacts.form.failed":
       "Не удалось отправить заявку. Пожалуйста, попробуйте ещё раз.",
+    "contacts.form.telegramUnavailable":
+      "Интеграция связи через Telegram не настроена. Пожалуйста, свяжитесь с владельцем сайта.",
     "footer.note": "Создано с заботой в Кыргызстане.",
     "footer.contact": "Отправить запрос ↗",
     "footer.copyright": "© 2026 TravelHorizon",
@@ -776,6 +780,8 @@ const translations = {
     "contacts.form.sent": "Рахмат! Өтүнүчүңүз командабызга жөнөтүлдү.",
     "contacts.form.failed":
       "Өтүнүчүңүз жөнөтүлгөн жок. Бир аздан кийин кайра аракет кылыңыз.",
+    "contacts.form.telegramUnavailable":
+      "Telegram аркылуу байланышуу интеграциясы жөндөлгөн эмес. Сайттын ээси менен байланышыңыз.",
     "footer.note": "Кыргызстанда камкордук менен түзүлдү.",
     "footer.contact": "Суроо жөнөтүү ↗",
     "footer.copyright": "© 2026 TravelHorizon",
@@ -1090,7 +1096,11 @@ contactForm?.addEventListener("submit", (event) => {
       });
       const result = await response.json();
       if (!response.ok) {
-        throw new Error(result.error || translate("contacts.form.failed"));
+        throw new Error(
+          result.code === "TELEGRAM_NOT_CONFIGURED"
+            ? translate("contacts.form.telegramUnavailable")
+            : result.error || translate("contacts.form.failed"),
+        );
       }
 
       contactForm.reset();

@@ -12,6 +12,10 @@ secrets/
 # Local application data
 data/
 node_modules/
+coverage/
+.render/
+*.log
+npm-debug.log*
 
 # macOS files
 .DS_Store

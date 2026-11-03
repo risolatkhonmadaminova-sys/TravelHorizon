@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 const crypto = require("node:crypto");
 const fs = require("node:fs/promises");
@@ -272,31 +274,6 @@ function normalizeContent(value) {
 }
 
 async function readJsonBody(request) {
-  if (request.body !== undefined) {
-    const body =
-      typeof request.body === "string" || Buffer.isBuffer(request.body)
-        ? (() => {
-            try {
-              return JSON.parse(request.body.toString("utf8"));
-            } catch {
-              const error = new Error("Request body must be valid JSON.");
-              error.statusCode = 400;
-              throw error;
-            }
-          })()
-        : request.body;
-    const serializedBody = JSON.stringify(body);
-    if (
-      serializedBody !== undefined &&
-      Buffer.byteLength(serializedBody) > maxRequestBytes
-    ) {
-      const error = new Error("Request body is too large.");
-      error.statusCode = 413;
-      throw error;
-    }
-    return body;
-  }
-
   const chunks = [];
   let bytes = 0;
   for await (const chunk of request) {
@@ -328,11 +305,8 @@ function createApplication({
   telegramChatId = process.env.TELEGRAM_CHAT_ID,
   telegramApiBase = "https://api.telegram.org",
   fetchImpl = globalThis.fetch,
-  storage,
-  enableAdmin = true,
 }) {
   const adminConfigured =
-    enableAdmin &&
     typeof adminUsername === "string" &&
     Boolean(adminUsername.trim()) &&
     typeof adminPassword === "string" &&
@@ -342,13 +316,7 @@ function createApplication({
   const passwordHash = adminConfigured
     ? crypto.scryptSync(adminPassword, passwordSalt, 64)
     : undefined;
-  const sessionSecret = adminConfigured
-    ? crypto.scryptSync(
-        adminPassword,
-        `TravelHorizon admin sessions:${adminUsername}`,
-        32,
-      )
-    : undefined;
+  const sessions = new Map();
   const loginAttempts = new Map();
   const contactAttempts = new Map();
   let content = {};
@@ -356,11 +324,6 @@ function createApplication({
   let writeQueue = Promise.resolve();
 
   async function loadContent() {
-    const storedContent = await storage?.readContent();
-    if (storedContent !== undefined) {
-      content = normalizeContent(storedContent);
-      return;
-    }
     try {
       const fileContent = await fs.readFile(contentFile, "utf8");
       content = normalizeContent(JSON.parse(fileContent));
@@ -371,11 +334,6 @@ function createApplication({
   }
 
   async function loadCatalog() {
-    const storedCatalog = await storage?.readCatalog();
-    if (storedCatalog !== undefined) {
-      catalog = normalizeCatalog(storedCatalog);
-      return;
-    }
     try {
       catalog = normalizeCatalog(JSON.parse(await fs.readFile(catalogFile, "utf8")));
     } catch (error) {
@@ -388,43 +346,14 @@ function createApplication({
 
   function getSession(request) {
     const token = parseCookies(request.headers.cookie).get(sessionCookieName);
-    if (!token || !sessionSecret) return undefined;
-    const [payload, signature, extra] = token.split(".");
-    if (!payload || !signature || extra !== undefined) return undefined;
-    const expectedSignature = crypto
-      .createHmac("sha256", sessionSecret)
-      .update(payload)
-      .digest("base64url");
-    if (!constantTimeEqual(signature, expectedSignature)) return undefined;
-    let session;
-    try {
-      session = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
-    } catch {
-      return undefined;
-    }
-    if (
-      typeof session.csrfToken !== "string" ||
-      typeof session.expiresAt !== "number" ||
-      session.expiresAt <= Date.now()
-    ) {
+    if (!token) return undefined;
+    const session = sessions.get(token);
+    if (!session) return undefined;
+    if (session.expiresAt <= Date.now()) {
+      sessions.delete(token);
       return undefined;
     }
     return { token, ...session };
-  }
-
-  function createSessionToken() {
-    const csrfToken = crypto.randomBytes(32).toString("base64url");
-    const payload = Buffer.from(
-      JSON.stringify({
-        csrfToken,
-        expiresAt: Date.now() + sessionLifetimeMs,
-      }),
-    ).toString("base64url");
-    const signature = crypto
-      .createHmac("sha256", sessionSecret)
-      .update(payload)
-      .digest("base64url");
-    return `${payload}.${signature}`;
   }
 
   function isSameOrigin(request) {
@@ -626,18 +555,14 @@ function createApplication({
   async function saveContent(nextContent) {
     const serialized = JSON.stringify(nextContent, null, 2);
     const write = writeQueue.then(async () => {
-      if (storage) {
-        await storage.writeContent(nextContent);
-      } else {
-        await fs.mkdir(path.dirname(contentFile), { recursive: true });
-        const temporaryFile = `${contentFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
-        await fs.writeFile(temporaryFile, serialized, {
-          encoding: "utf8",
-          flag: "wx",
-          mode: 0o600,
-        });
-        await fs.rename(temporaryFile, contentFile);
-      }
+      await fs.mkdir(path.dirname(contentFile), { recursive: true });
+      const temporaryFile = `${contentFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
+      await fs.writeFile(temporaryFile, serialized, {
+        encoding: "utf8",
+        flag: "wx",
+        mode: 0o600,
+      });
+      await fs.rename(temporaryFile, contentFile);
     });
     writeQueue = write.then(
       () => undefined,
@@ -650,18 +575,14 @@ function createApplication({
   async function saveCatalog(nextCatalog) {
     const serialized = JSON.stringify(nextCatalog, null, 2);
     const write = writeQueue.then(async () => {
-      if (storage) {
-        await storage.writeCatalog(nextCatalog);
-      } else {
-        await fs.mkdir(path.dirname(catalogFile), { recursive: true });
-        const temporaryFile = `${catalogFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
-        await fs.writeFile(temporaryFile, serialized, {
-          encoding: "utf8",
-          flag: "wx",
-          mode: 0o600,
-        });
-        await fs.rename(temporaryFile, catalogFile);
-      }
+      await fs.mkdir(path.dirname(catalogFile), { recursive: true });
+      const temporaryFile = `${catalogFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
+      await fs.writeFile(temporaryFile, serialized, {
+        encoding: "utf8",
+        flag: "wx",
+        mode: 0o600,
+      });
+      await fs.rename(temporaryFile, catalogFile);
     });
     writeQueue = write.then(
       () => undefined,
@@ -680,13 +601,11 @@ function createApplication({
     }
 
     if (pathname === "/api/content" && request.method === "GET") {
-      if (storage) await loadContent();
       sendJson(response, 200, content);
       return;
     }
 
     if (pathname === "/api/catalog" && request.method === "GET") {
-      if (storage) await loadCatalog();
       sendJson(response, 200, { catalog: catalog || null });
       return;
     }
@@ -703,15 +622,11 @@ function createApplication({
         !telegramChatId
       ) {
         sendJson(response, 503, {
-          error:
-            "Contact delivery is not configured. Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID on the server.",
+          code: "TELEGRAM_NOT_CONFIGURED",
+          error: "Telegram contact integration is not configured.",
         });
         return;
       }
-      if (storage) {
-        await Promise.all([loadContent(), loadCatalog()]);
-      }
-
       const attempts = getContactAttempts(request);
       if (attempts.count >= maxContactAttempts) {
         sendJson(response, 429, {
@@ -801,11 +716,7 @@ function createApplication({
         if (nextCatalog) {
           await saveCatalog(nextCatalog);
         } else {
-          if (storage) {
-            await storage.deleteCatalog();
-          } else {
-            await fs.rm(catalogFile, { force: true });
-          }
+          await fs.rm(catalogFile, { force: true });
           catalog = undefined;
         }
       } catch (error) {
@@ -862,7 +773,12 @@ function createApplication({
           request.headers["x-forwarded-for"] ||
           "unknown",
       );
-      const token = createSessionToken();
+      const token = crypto.randomBytes(32).toString("base64url");
+      const csrfToken = crypto.randomBytes(32).toString("base64url");
+      sessions.set(token, {
+        csrfToken,
+        expiresAt: Date.now() + sessionLifetimeMs,
+      });
       sendJson(
         response,
         200,
@@ -934,6 +850,7 @@ function createApplication({
         sendJson(response, 403, { error: "Request verification failed." });
         return;
       }
+      sessions.delete(session.token);
       sendJson(
         response,
         200,
@@ -1050,13 +967,12 @@ function createApplication({
     server,
     loadContent,
     loadCatalog,
-    handleApi,
   };
 }
 
 if (require.main === module) {
   const port = Number(process.env.PORT || 3000);
-  const host = process.env.HOST || "0.0.0.0";
+  const host = "0.0.0.0";
   const { server, loadContent, loadCatalog } = createApplication({
     adminUsername: process.env.ADMIN_USERNAME,
     adminPassword: process.env.ADMIN_PASSWORD,

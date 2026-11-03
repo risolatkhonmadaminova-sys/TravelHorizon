@@ -1,5 +1,7 @@
 const assert = require("node:assert/strict");
+const { spawn } = require("node:child_process");
 const fs = require("node:fs/promises");
+const http = require("node:http");
 const os = require("node:os");
 const path = require("node:path");
 const { afterEach, beforeEach, test } = require("node:test");
@@ -146,6 +148,21 @@ test("admin route shows sign-in until a valid admin session exists", async () =>
   assert.match(adminHtml, /id="admin-content-form"/);
   assert.match(adminHtml, /Shared site content/);
   assert.doesNotMatch(adminHtml, /id="admin-login-form"/);
+
+  const csrfToken = await getCsrfToken(cookie);
+  const logout = await fetch(`${origin}/api/admin/logout`, {
+    method: "POST",
+    headers: {
+      Cookie: cookie,
+      Origin: origin,
+      "X-CSRF-Token": csrfToken,
+    },
+  });
+  assert.equal(logout.status, 200);
+  const loggedOutSession = await fetch(`${origin}/api/admin/session`, {
+    headers: { Cookie: cookie },
+  });
+  assert.equal(loggedOutSession.status, 401);
 });
 
 test("content writes require an admin session and CSRF token and persist", async () => {
@@ -193,6 +210,20 @@ test("content writes require an admin session and CSRF token and persist", async
   server = undefined;
   await startServer();
   assert.deepEqual(await (await fetch(`${origin}/api/content`)).json(), contentOverride);
+
+  const restartedLogin = await signIn();
+  const restartedCookie = restartedLogin.headers.get("set-cookie");
+  const restartedCsrfToken = await getCsrfToken(restartedCookie);
+  const reset = await fetch(`${origin}/api/admin/content`, {
+    method: "DELETE",
+    headers: {
+      Cookie: restartedCookie,
+      Origin: origin,
+      "X-CSRF-Token": restartedCsrfToken,
+    },
+  });
+  assert.equal(reset.status, 200);
+  assert.deepEqual(await (await fetch(`${origin}/api/content`)).json(), {});
 });
 
 test("catalog changes require an admin session, validate photos, and persist", async () => {
@@ -280,6 +311,22 @@ test("catalog changes require an admin session, validate photos, and persist", a
     (await (await fetch(`${origin}/api/catalog`)).json()).catalog,
     catalogOverride,
   );
+
+  const restartedLogin = await signIn();
+  const restartedCookie = restartedLogin.headers.get("set-cookie");
+  const restartedCsrfToken = await getCsrfToken(restartedCookie);
+  const reset = await fetch(`${origin}/api/admin/catalog`, {
+    method: "DELETE",
+    headers: {
+      Cookie: restartedCookie,
+      Origin: origin,
+      "X-CSRF-Token": restartedCsrfToken,
+    },
+  });
+  assert.equal(reset.status, 200);
+  assert.deepEqual(await (await fetch(`${origin}/api/catalog`)).json(), {
+    catalog: null,
+  });
 });
 
 test("rejects cross-origin login and does not expose backend files", async () => {
@@ -496,7 +543,9 @@ test("public APIs work without environment configuration and admin remains disab
       ["/api/admin/login", "POST", { username: "admin", password: adminPassword }],
       ["/api/admin/session", "GET"],
       ["/api/admin/content", "PUT", { content: contentOverride }],
+      ["/api/admin/content", "DELETE"],
       ["/api/admin/catalog", "PUT", { catalog: catalogOverride }],
+      ["/api/admin/catalog", "DELETE"],
       ["/api/admin/logout", "POST"],
     ];
     for (const [pathname, method, body] of adminRequests) {
@@ -512,6 +561,12 @@ test("public APIs work without environment configuration and admin remains disab
       assert.equal(typeof (await response.json()).error, "string");
     }
 
+    const adminPage = await fetch(`${unconfiguredOrigin}/admin.html`);
+    assert.equal(adminPage.status, 200);
+    const adminPageHtml = await adminPage.text();
+    assert.match(adminPageHtml, /id="admin-login-form"/);
+    assert.doesNotMatch(adminPageHtml, /id="admin-content-form"/);
+
     const contactResponse = await fetch(`${unconfiguredOrigin}/api/contact`, {
       method: "POST",
       headers: {
@@ -526,7 +581,10 @@ test("public APIs work without environment configuration and admin remains disab
       }),
     });
     assert.equal(contactResponse.status, 503);
-    assert.equal(typeof (await contactResponse.json()).error, "string");
+    assert.deepEqual(await contactResponse.json(), {
+      code: "TELEGRAM_NOT_CONFIGURED",
+      error: "Telegram contact integration is not configured.",
+    });
   } finally {
     await new Promise((resolve, reject) =>
       unconfiguredServer.close((error) =>
@@ -536,93 +594,99 @@ test("public APIs work without environment configuration and admin remains disab
   }
 });
 
-test("shared storage and signed admin sessions work across server instances", async () => {
-  const sharedContent = {};
-  const sharedCatalog = JSON.parse(
-    await fs.readFile(path.join(__dirname, "..", "data", "catalog.json"), "utf8"),
+test("public APIs return JSON when ignored data files are not deployed", async () => {
+  const missingDataDirectory = path.join(temporaryDirectory, "not-deployed");
+  const application = createApplication({
+    contentFile: path.join(missingDataDirectory, "content.json"),
+    catalogFile: path.join(missingDataDirectory, "catalog.json"),
+    adminUsername: "",
+    adminPassword: "",
+    telegramBotToken: "",
+    telegramChatId: "",
+  });
+  await Promise.all([application.loadContent(), application.loadCatalog()]);
+  const missingDataServer = application.server;
+  await new Promise((resolve) =>
+    missingDataServer.listen(0, "127.0.0.1", resolve),
   );
-  const storage = {
-    readContent: async () => sharedContent,
-    readCatalog: async () => sharedCatalog,
-    writeContent: async (value) => Object.assign(sharedContent, value),
-    writeCatalog: async (value) => {
-      sharedCatalog.tours = value.tours;
-      sharedCatalog.experiences = value.experiences;
-    },
-    deleteCatalog: async () => undefined,
-  };
-  const firstApplication = createApplication({
-    adminUsername,
-    adminPassword,
-    storage,
-    telegramBotToken: "",
-    telegramChatId: "",
-  });
-  const secondApplication = createApplication({
-    adminUsername,
-    adminPassword,
-    storage,
-    telegramBotToken: "",
-    telegramChatId: "",
-  });
-  await Promise.all([
-    firstApplication.loadContent(),
-    firstApplication.loadCatalog(),
-    secondApplication.loadContent(),
-    secondApplication.loadCatalog(),
-  ]);
-  const servers = [firstApplication.server, secondApplication.server];
-  const origins = [];
-  for (const applicationServer of servers) {
-    await new Promise((resolve) =>
-      applicationServer.listen(0, "127.0.0.1", resolve),
-    );
-    origins.push(`http://127.0.0.1:${applicationServer.address().port}`);
-  }
+  const missingDataOrigin = `http://127.0.0.1:${missingDataServer.address().port}`;
 
   try {
-    const login = await fetch(`${origins[0]}/api/admin/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Origin: origins[0],
-      },
-      body: JSON.stringify({ username: adminUsername, password: adminPassword }),
-    });
-    assert.equal(login.status, 200);
-    const cookie = login.headers.get("set-cookie");
+    const content = await fetch(`${missingDataOrigin}/api/content`);
+    assert.equal(content.status, 200);
+    assert.match(content.headers.get("content-type"), /application\/json/);
+    assert.deepEqual(await content.json(), {});
 
-    const session = await fetch(`${origins[1]}/api/admin/session`, {
-      headers: { Cookie: cookie },
-    });
-    assert.equal(session.status, 200);
-    const { csrfToken } = await session.json();
+    const catalog = await fetch(`${missingDataOrigin}/api/catalog`);
+    assert.equal(catalog.status, 200);
+    assert.match(catalog.headers.get("content-type"), /application\/json/);
+    assert.deepEqual(await catalog.json(), { catalog: null });
 
-    const save = await fetch(`${origins[1]}/api/admin/content`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Cookie: cookie,
-        Origin: origins[1],
-        "X-CSRF-Token": csrfToken,
-      },
-      body: JSON.stringify({ content: contentOverride }),
-    });
-    assert.equal(save.status, 200);
-    assert.deepEqual(sharedContent, contentOverride);
-
-    const publicContent = await fetch(`${origins[0]}/api/content`);
-    assert.deepEqual(await publicContent.json(), contentOverride);
+    const toursPage = await fetch(`${missingDataOrigin}/tours.html`);
+    assert.equal(toursPage.status, 200);
+    assert.match(await toursPage.text(), /Ala-Archa, on foot/);
   } finally {
-    await Promise.all(
-      servers.map(
-        (applicationServer) =>
-          new Promise((resolve, reject) =>
-            applicationServer.close((error) =>
-              error ? reject(error) : resolve(),
-            ),
-          ),
+    await new Promise((resolve, reject) =>
+      missingDataServer.close((error) =>
+        error ? reject(error) : resolve(),
       ),
     );
+  }
+});
+
+test("server starts without secrets on the Render host and serves its APIs", async () => {
+  const projectDirectory = path.join(__dirname, "..");
+  const portServer = http.createServer();
+  await new Promise((resolve) => portServer.listen(0, "127.0.0.1", resolve));
+  const port = portServer.address().port;
+  await new Promise((resolve, reject) =>
+    portServer.close((error) => (error ? reject(error) : resolve())),
+  );
+
+  const child = spawn(process.execPath, ["server.js"], {
+    cwd: projectDirectory,
+    env: {
+      PATH: process.env.PATH || "",
+      PORT: String(port),
+      NODE_ENV: "production",
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  let output = "";
+  child.stdout.setEncoding("utf8").on("data", (chunk) => {
+    output += chunk;
+  });
+  child.stderr.setEncoding("utf8").on("data", (chunk) => {
+    output += chunk;
+  });
+
+  try {
+    const origin = `http://127.0.0.1:${port}`;
+    let response;
+    for (let attempt = 0; attempt < 50; attempt += 1) {
+      if (child.exitCode !== null) {
+        throw new Error(`Server exited before becoming ready: ${output}`);
+      }
+      try {
+        response = await fetch(`${origin}/api/content`);
+        break;
+      } catch {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    }
+
+    assert.ok(response, `Server did not start: ${output}`);
+    assert.match(output, new RegExp(`http://0\\.0\\.0\\.0:${port}`));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { en: {}, ru: {}, ky: {} });
+
+    const catalogResponse = await fetch(`${origin}/api/catalog`);
+    assert.equal(catalogResponse.status, 200);
+    assert.match(catalogResponse.headers.get("content-type"), /application\/json/);
+  } finally {
+    if (child.exitCode === null) {
+      child.kill("SIGTERM");
+      await new Promise((resolve) => child.once("exit", resolve));
+    }
   }
 });
