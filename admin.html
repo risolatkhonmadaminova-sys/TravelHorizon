@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <meta name="description" content="Edit TravelHorizon website content." />
+    <title>Site editor — TravelHorizon</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body data-page="admin" class="admin-page">
+    <header class="admin-header">
+      <a class="wordmark" href="index.html" aria-label="TravelHorizon home"
+        ><span class="wordmark-mark">TH</span
+        ><span>Travel<span class="wordmark-light">Horizon</span></span></a
+      >
+      <div class="admin-header-actions">
+        <button id="admin-logout" class="admin-secondary-button" type="button">
+          Sign out
+        </button>
+        <a class="admin-back" href="index.html">Back to website ↗</a>
+      </div>
+    </header>
+    <main class="admin-main">
+      <section class="admin-intro">
+        <p class="eyebrow dark-eyebrow">WEBSITE CONTENT</p>
+        <h1>Site editor</h1>
+        <p>
+          Update text in English, Russian, and Kyrgyz, including tour details
+          and prices.
+        </p>
+      </section>
+
+      <aside class="admin-notice" aria-label="Storage information">
+        <strong>Shared site content</strong>
+        <p>
+          Changes are stored by the server and appear for all visitors. Only
+          signed-in administrators can edit or restore site content.
+        </p>
+      </aside>
+
+      <form id="admin-content-form" class="admin-content-form">
+        <div class="admin-toolbar">
+          <label for="editor-language">Edit language</label>
+          <select id="editor-language">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+            <option value="ky">Кыргызча</option>
+          </select>
+          <button class="button-link" type="submit">
+            <span>Save changes</span><span aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <div id="admin-fields" class="admin-fields"></div>
+        <p
+          id="admin-status"
+          class="admin-status"
+          role="status"
+          aria-live="polite"
+        >
+          Changes not saved yet.
+        </p>
+      </form>
+
+      <section id="catalog-manager" class="catalog-manager">
+        <div class="catalog-manager-heading">
+          <div>
+            <p class="eyebrow dark-eyebrow">DESTINATIONS &amp; ACTIVITIES</p>
+            <h2>Manage tours and experiences</h2>
+            <p>
+              Add or remove listings, update details and prices, and change
+              Wikimedia photo credits. Text is available in English, Russian,
+              and Kyrgyz.
+            </p>
+          </div>
+          <div class="catalog-manager-actions">
+            <button id="add-tour" class="admin-secondary-button" type="button">
+              Add a tour
+            </button>
+            <button
+              id="add-experience"
+              class="admin-secondary-button"
+              type="button"
+            >
+              Add an experience
+            </button>
+          </div>
+        </div>
+        <p class="catalog-help">
+          Use HTTPS image URLs from Wikimedia Commons (thumb.wikimedia.org or
+          upload.wikimedia.org) and include the photographer, file-page link,
+          license, and license link.
+        </p>
+        <div id="catalog-items" class="catalog-items"></div>
+        <div class="catalog-save-row">
+          <p
+            id="catalog-status"
+            class="admin-status"
+            role="status"
+            aria-live="polite"
+          >
+            Catalog not saved yet.
+          </p>
+          <div class="catalog-manager-actions">
+            <button
+              id="reset-catalog"
+              class="admin-secondary-button"
+              type="button"
+            >
+              Restore original listings
+            </button>
+            <button id="save-catalog" class="button-link" type="button">
+              <span>Save listings</span><span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-backup" aria-label="Backup controls">
+        <h2>Backups</h2>
+        <div class="admin-backup-actions">
+          <button
+            id="export-content"
+            class="admin-secondary-button"
+            type="button"
+          >
+            Download backup
+          </button>
+          <button
+            id="import-content"
+            class="admin-secondary-button"
+            type="button"
+          >
+            Import backup
+          </button>
+          <input
+            id="import-content-file"
+            type="file"
+            accept="application/json,.json"
+            hidden
+          />
+          <button id="reset-content" class="admin-reset-button" type="button">
+            Restore original content
+          </button>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

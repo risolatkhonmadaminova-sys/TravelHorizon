@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -100,13 +100,15 @@
             TRAVELHORIZON · KYRGYZSTAN
           </p>
           <h2 data-i18n="contacts.details.title">Let’s talk travel.</h2>
-          <a class="contact-email" href="mailto:hello@travelhorizon.kg"
-            >hello@travelhorizon.kg <span aria-hidden="true">↗</span></a
+          <a class="contact-telegram-link" href="#contact-form"
+            ><span data-i18n="contacts.telegram.link"
+              >Send an enquiry via Telegram ↗</span
+            ></a
           >
           <p data-i18n="contacts.location">Bishkek, Kyrgyzstan</p>
           <div class="contact-coordinate">42°52′ N<br />74°36′ E</div>
         </div>
-        <form class="contact-form" id="contact-form" data-mailto-form>
+        <form class="contact-form" id="contact-form" data-contact-form>
           <label
             ><span data-i18n="contacts.form.name">Your name</span
             ><input
@@ -139,8 +141,14 @@
               <option value="issyk" data-i18n="trip.issyk.title">
                 The long way around
               </option>
-              <option value="jyrgalan" data-i18n="trip.jyrgalan.title">
-                Jyrgalan, off the map
+              <option value="kelsuu" data-i18n="trip.kelsuu.title">
+                Kel-Suu by horseback
+              </option>
+              <option value="jetioguz" data-i18n="trip.jetioguz.title">
+                Jeti-Oguz, Barskoon &amp; Skazka
+              </option>
+              <option value="karakol" data-i18n="trip.karakol.title">
+                Karakol horse ride &amp; yurt
               </option>
             </select></label
           ><label
@@ -169,34 +177,17 @@
               Starting price in USD. Final price confirmed by our team.
             </p>
           </div>
+          <input
+            type="hidden"
+            id="contact-interest"
+            name="interest"
+            value="general"
+          />
           <label
-            ><span data-i18n="contacts.form.interest">I’m interested in</span
-            ><select name="interest" id="contact-interest">
-              <option value="general" data-i18n="contacts.form.general">
-                A trip to Kyrgyzstan
-              </option>
-              <option value="partner" data-i18n="contacts.form.partner">
-                Partnering with TravelHorizon
-              </option>
-              <option value="experience" data-i18n="contacts.form.experience">
-                A local experience
-              </option>
-              <option value="horse" data-i18n="experiences.horse.title">
-                On horseback
-              </option>
-              <option value="yurt" data-i18n="experiences.yurt.title">
-                A yurt stay
-              </option>
-              <option value="food" data-i18n="experiences.food.title">
-                Local food
-              </option>
-              <option value="trek" data-i18n="experiences.trek.title">
-                A mountain trek
-              </option>
-            </select></label
-          ><label
             ><span data-i18n="contacts.form.message"
               >A little about your plans</span
+            ><span class="optional-note" data-i18n="contacts.form.optional"
+              >Optional</span
             ><textarea
               name="message"
               rows="4"
@@ -204,10 +195,15 @@
               data-i18n-placeholder="contacts.form.message.placeholder"
             ></textarea></label
           ><button class="button-link form-button" type="submit">
-            <span data-i18n="contacts.form.submit">Open email to send</span
+              <span data-i18n="contacts.form.submit">Send enquiry</span
             ><span aria-hidden="true">↗</span>
           </button>
-          <p class="form-message" id="form-message" aria-live="polite"></p>
+            <p
+              class="form-message"
+              id="form-message"
+              role="status"
+              aria-live="polite"
+            ></p>
         </form>
       </section>
     </main>
@@ -218,8 +214,9 @@
       >
       <p data-i18n="footer.note">Made with care in Kyrgyzstan.</p>
       <div class="footer-links">
-        <a href="mailto:hello@travelhorizon.kg" data-i18n="footer.contact"
-          >Say hello ↗</a
+        <a href="contacts.html#contact-form" data-i18n="footer.contact"
+          >Send an enquiry ↗</a
+        ><a href="admin.html">Site editor</a
         ><span data-i18n="footer.copyright">© 2026 TravelHorizon</span>
       </div>
     </footer>

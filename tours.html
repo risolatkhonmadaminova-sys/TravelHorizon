@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -133,121 +133,411 @@
             data-i18n="filter.culture"
           >
             Slow travel</button
-          ><span class="results-count" aria-live="polite">04 tours</span>
+          ><span class="results-count" aria-live="polite">06 tours</span>
         </div>
+        <p class="source-note" data-i18n="tours.source.note">
+          Prices shown are indicative starting prices per traveler in USD.
+          Final prices depend on dates and trip arrangements. Routes without a
+          published price are marked “Rate on request.”
+        </p>
         <div class="tour-grid">
-          <article class="tour-card" id="ala" data-tags="trekking water">
-            <a
-              class="tour-photo image-ala-kul"
-              href="contacts.html?tour=ala#enquiry"
-              aria-label="Ask about Ala-Kul"
-              data-i18n-aria="trip.ala.aria"
-              ><span class="image-label" data-i18n="trip.ala.label"
-                >01 / THE HIGH TRAILS</span
-              ></a
-            >
+          <article class="tour-card" id="ala" data-tags="trekking">
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg/960px-%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg"
+                alt="Ala-Archa gorge in Chuy Region, Kyrgyzstan"
+                data-i18n-alt="trip.ala.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.ala.label"
+                >01 / THE ALA-ARCHA GORGE</span
+              >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_(3).jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Nikolai Bulykin</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by-sa/4.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY-SA 4.0</a
+                >
+              </figcaption>
+            </figure>
             <div class="tour-info">
               <p class="tour-location" data-i18n="trip.ala.location">
-                KARAKOL · 8 DAYS
+                BISHKEK · 5 HOURS
               </p>
               <div class="tour-title-row">
-                <h2 data-i18n="trip.ala.title">
-                  Ala-Kul &amp; the high trails
-                </h2>
-                <span data-i18n="trip.ala.price">from $980</span>
+                <h2 data-i18n="trip.ala.title">Ala-Archa, on foot</h2>
+                <span class="tour-price" data-i18n="trip.ala.price"
+                  >from $70 / traveler</span
+                >
               </div>
               <div class="tour-meta">
-                <span data-i18n="trip.ala.activity">↟ Trekking</span
-                ><span data-i18n="trip.ala.season">◷ Jun — Sep</span>
+                <span data-i18n="trip.ala.activity"
+                  >↟ Guided walk + Kyrgyz picnic</span
+                ><span data-i18n="trip.ala.season">◷ Route options vary</span>
               </div>
-              <a class="text-link" href="contacts.html?tour=ala#enquiry"
-                ><span data-i18n="tours.enquire">Enquire about this tour</span
-                ><span aria-hidden="true">↗</span></a
-              >
+              <p class="tour-description" data-i18n="trip.ala.description">
+                A guided visit to the national park, with a choice of walk and
+                a Kyrgyz picnic.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.ala.includes"
+                  >The listing describes a guide, a moderate walk option, and a
+                  picnic. The exact route depends on the selected option.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a class="text-link" href="contacts.html?tour=ala#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
           </article>
           <article class="tour-card" id="song" data-tags="water culture">
-            <a
-              class="tour-photo image-song-kul"
-              href="contacts.html?tour=song#enquiry"
-              aria-label="Ask about Song-Kul"
-              data-i18n-aria="trip.song.aria"
-              ><span class="image-label" data-i18n="trip.song.label"
-                >02 / THE OPEN COUNTRY</span
-              ></a
-            >
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg/960px-Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg"
+                alt="Yurts beside Song-Kul Lake, Naryn Region"
+                data-i18n-alt="trip.song.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.song.label"
+                >02 / THE HIGH-COUNTRY LAKE</span
+              >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Kyrgyzstan_yurts_at_Song_Kul_(48221119097).jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Kalpak Travel</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by/2.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY 2.0</a
+                >
+              </figcaption>
+            </figure>
             <div class="tour-info">
               <p class="tour-location" data-i18n="trip.song.location">
-                NARYN · 6 DAYS
+                NARYN · 1 NIGHT
               </p>
               <div class="tour-title-row">
-                <h2 data-i18n="trip.song.title">Song-Kul, slowly</h2>
-                <span data-i18n="trip.song.price">from $740</span>
+                <h2 data-i18n="trip.song.title">A night at Song-Kul</h2>
+                <span class="tour-price" data-i18n="trip.song.price"
+                  >Rate on request</span
+                >
               </div>
               <div class="tour-meta">
-                <span data-i18n="trip.song.activity">⌂ Yurt stays</span
-                ><span data-i18n="trip.song.season">◷ Jun — Oct</span>
+                <span data-i18n="trip.song.activity"
+                  >⌂ Yurt stay + host-family meal</span
+                ><span data-i18n="trip.song.season">◷ 20 May — 15 Oct</span>
               </div>
-              <a class="text-link" href="contacts.html?tour=song#enquiry"
-                ><span data-i18n="tours.enquire">Enquire about this tour</span
-                ><span aria-hidden="true">↗</span></a
-              >
+              <p class="tour-description" data-i18n="trip.song.description">
+                Travel from Kochkor over Kalmak Ashuu Pass, meet a host family,
+                and stay beside the high-altitude lake.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.song.includes"
+                  >The route page describes the transfer, a traditional meal,
+                  and an overnight in a yurt. No public price is listed.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a class="text-link" href="contacts.html?tour=song#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
           </article>
-          <article class="tour-card" id="issyk" data-tags="water trekking">
-            <a
-              class="tour-photo image-issyk-kul"
-              href="contacts.html?tour=issyk#enquiry"
-              aria-label="Ask about Issyk-Kul"
-              data-i18n-aria="trip.issyk.aria"
-              ><span class="image-label" data-i18n="trip.issyk.label"
+          <article class="tour-card" id="issyk" data-tags="water culture">
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Issyk-Kul%2C_Kyrgyzstan_%2843713946455%29.jpg/960px-Issyk-Kul%2C_Kyrgyzstan_%2843713946455%29.jpg"
+                alt="The southern shore of Issyk-Kul Lake, Kyrgyzstan"
+                data-i18n-alt="trip.issyk.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.issyk.label"
                 >03 / THE INNER SEA</span
-              ></a
-            >
+              >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Issyk-Kul,_Kyrgyzstan_(43713946455).jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Ninara</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by/2.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY 2.0</a
+                >
+              </figcaption>
+            </figure>
             <div class="tour-info">
               <p class="tour-location" data-i18n="trip.issyk.location">
-                ISSYK-KUL · 7 DAYS
+                BISHKEK · 11 HOURS
               </p>
               <div class="tour-title-row">
-                <h2 data-i18n="trip.issyk.title">The long way around</h2>
-                <span data-i18n="trip.issyk.price">from $860</span>
+                <h2 data-i18n="trip.issyk.title"
+                  >Issyk-Kul, canyons &amp; local food</h2
+                >
+                <span class="tour-price" data-i18n="trip.issyk.price"
+                  >from $80 / traveler</span
+                >
               </div>
               <div class="tour-meta">
-                <span data-i18n="trip.issyk.activity">⌁ Lakeside</span
-                ><span data-i18n="trip.issyk.season">◷ May — Oct</span>
+                <span data-i18n="trip.issyk.activity"
+                  >⌁ Lake shore + canyon walk</span
+                ><span data-i18n="trip.issyk.season"
+                  >◷ Swimming in warm months</span
+                >
               </div>
-              <a class="text-link" href="contacts.html?tour=issyk#enquiry"
-                ><span data-i18n="tours.enquire">Enquire about this tour</span
-                ><span aria-hidden="true">↗</span></a
-              >
+              <p class="tour-description" data-i18n="trip.issyk.description">
+                A full day from Bishkek linking Burana Tower, Kok-Moinok Canyon,
+                and the Issyk-Kul shore.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.issyk.includes"
+                  >The listing includes pickup, transport, guide, lunch, bottled
+                  water, Burana Tower, a canyon walk, and a lakeside stop.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a class="text-link" href="contacts.html?tour=issyk#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
           </article>
-          <article class="tour-card" id="jyrgalan" data-tags="culture trekking">
-            <a
-              class="tour-photo image-jyrgalan"
-              href="contacts.html?tour=jyrgalan#enquiry"
-              aria-label="Ask about Jyrgalan"
-              data-i18n-aria="trip.jyrgalan.aria"
-              ><span class="image-label" data-i18n="trip.jyrgalan.label"
-                >04 / THE EASTERN VALLEYS</span
-              ></a
-            >
+          <article class="tour-card" id="kelsuu" data-tags="water culture">
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Kol-Suu.jpg/960px-Kol-Suu.jpg"
+                alt="Kel-Suu Lake in the Naryn Region of Kyrgyzstan"
+                data-i18n-alt="trip.kelsuu.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.kelsuu.label"
+                >04 / THE REMOTE FRONTIER</span
+              >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Kol-Suu.jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Eventyrlys</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by-sa/4.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY-SA 4.0</a
+                >
+              </figcaption>
+            </figure>
             <div class="tour-info">
-              <p class="tour-location" data-i18n="trip.jyrgalan.location">
-                JYRGALAN · 5 DAYS
+              <p class="tour-location" data-i18n="trip.kelsuu.location">
+                NARYN · 12 KM HORSE RIDE
               </p>
               <div class="tour-title-row">
-                <h2 data-i18n="trip.jyrgalan.title">Jyrgalan, off the map</h2>
-                <span data-i18n="trip.jyrgalan.price">from $620</span>
+                <h2 data-i18n="trip.kelsuu.title">Kel-Suu by horseback</h2>
+                <span class="tour-price" data-i18n="trip.kelsuu.price"
+                  >Rate on request</span
+                >
               </div>
               <div class="tour-meta">
-                <span data-i18n="trip.jyrgalan.activity">↟ Village life</span
-                ><span data-i18n="trip.jyrgalan.season">◷ Jun — Oct</span>
+                <span data-i18n="trip.kelsuu.activity"
+                  >↟ Horse ride + yurt night</span
+                ><span data-i18n="trip.kelsuu.season">◷ 1 Jun — 30 Sep</span>
               </div>
-              <a class="text-link" href="contacts.html?tour=jyrgalan#enquiry"
-                ><span data-i18n="tours.enquire">Enquire about this tour</span
-                ><span aria-hidden="true">↗</span></a
+              <p class="tour-description" data-i18n="trip.kelsuu.description">
+                Ride to the lake with a local horse team, then stay with a host
+                family in a yurt.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.kelsuu.includes"
+                  >The operator describes a 12 km ride and one yurt night.
+                  Kel-Suu is in a controlled area; confirm current checkpoint
+                  and permit requirements before travel. No public price is
+                  listed.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a class="text-link" href="contacts.html?tour=kelsuu#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
+            </div>
+          </article>
+          <article
+            class="tour-card"
+            id="jetioguz"
+            data-tags="trekking culture"
+          >
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg/960px-Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg"
+                alt="The red-rock ridge at Jeti-Oguz, Kyrgyzstan"
+                data-i18n-alt="trip.jetioguz.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.jetioguz.label"
+                >05 / RED ROCK &amp; FAIRY-TALE CANYON</span
               >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Red_Rock_Ridge_at_Djeti-Oguz_(3975957247).jpg"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Peretz Partensky</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by-sa/2.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY-SA 2.0</a
+                >
+              </figcaption>
+            </figure>
+            <div class="tour-info">
+              <p class="tour-location" data-i18n="trip.jetioguz.location">
+                KARAKOL · 10–11 HOURS
+              </p>
+              <div class="tour-title-row">
+                <h2 data-i18n="trip.jetioguz.title"
+                  >Jeti-Oguz, Barskoon &amp; Skazka</h2
+                >
+                <span class="tour-price" data-i18n="trip.jetioguz.price"
+                  >from $120 / traveler</span
+                >
+              </div>
+              <div class="tour-meta">
+                <span data-i18n="trip.jetioguz.activity"
+                  >↟ Gorge, waterfall hike + canyon</span
+                ><span data-i18n="trip.jetioguz.season"
+                  >◷ Day trip from Karakol</span
+                >
+              </div>
+              <p
+                class="tour-description"
+                data-i18n="trip.jetioguz.description"
+              >
+                A long day out to Jeti-Oguz Gorge, Barskoon Waterfalls, and the
+                red formations of Skazka Canyon.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.jetioguz.includes"
+                  >The listing describes the gorge, a waterfall hike, and the
+                  canyon. Lunch is at a local cafe or a picnic depending on
+                  arrangements.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a
+                  class="text-link"
+                  href="contacts.html?tour=jetioguz#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
+            </div>
+          </article>
+          <article class="tour-card" id="karakol" data-tags="trekking culture">
+            <figure class="tour-photo">
+              <img
+                src="https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Pik_Karakolskiy.JPG/960px-Pik_Karakolskiy.JPG"
+                alt="Karakol Peak in the Terskey Ala-Too range"
+                data-i18n-alt="trip.karakol.aria"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="image-label" data-i18n="trip.karakol.label"
+                >06 / KARAKOL ON HORSEBACK</span
+              >
+              <figcaption class="photo-attribution">
+                <a
+                  href="https://commons.wikimedia.org/wiki/File:Pik_Karakolskiy.JPG"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Tadeáš Gregor</a
+                >
+                ·
+                <a
+                  href="https://creativecommons.org/licenses/by-sa/3.0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >CC BY-SA 3.0</a
+                >
+              </figcaption>
+            </figure>
+            <div class="tour-info">
+              <p class="tour-location" data-i18n="trip.karakol.location">
+                KARAKOL · 4 HOURS
+              </p>
+              <div class="tour-title-row">
+                <h2 data-i18n="trip.karakol.title"
+                  >Karakol horse ride &amp; yurt</h2
+                >
+                <span class="tour-price" data-i18n="trip.karakol.price"
+                  >from $120 / traveler</span
+                >
+              </div>
+              <div class="tour-meta">
+                <span data-i18n="trip.karakol.activity"
+                  >↟ Horse ride + tea with hosts</span
+                ><span data-i18n="trip.karakol.season"
+                  >◷ Confirm details before booking</span
+                >
+              </div>
+              <p class="tour-description" data-i18n="trip.karakol.description">
+                Ride mountain trails outside Karakol, visit a yurt, and share
+                tea with local hosts.
+              </p>
+              <p class="tour-includes">
+                <strong data-i18n="tours.includes">Trip details:</strong>
+                <span data-i18n="trip.karakol.includes"
+                  >The listing describes a hotel or meeting-point transfer,
+                  about 2–3 hours riding, a yurt visit, and tea. Confirm guide
+                  language and helmet availability with the operator.</span
+                >
+              </p>
+              <div class="tour-actions">
+                <a
+                  class="text-link"
+                  href="contacts.html?tour=karakol#enquiry"
+                  ><span data-i18n="tours.enquire">Enquire about this tour</span
+                  ><span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
           </article>
         </div>
@@ -263,8 +553,9 @@
       >
       <p data-i18n="footer.note">Made with care in Kyrgyzstan.</p>
       <div class="footer-links">
-        <a href="mailto:hello@travelhorizon.kg" data-i18n="footer.contact"
-          >Say hello ↗</a
+        <a href="contacts.html#contact-form" data-i18n="footer.contact"
+          >Send an enquiry ↗</a
+        ><a href="admin.html">Site editor</a
         ><span data-i18n="footer.copyright">© 2026 TravelHorizon</span>
       </div>
     </footer>

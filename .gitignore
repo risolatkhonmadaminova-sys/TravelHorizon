@@ -1,0 +1,17 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Private credentials
+secrets/
+*.pem
+*.key
+
+# Local application data
+data/
+node_modules/
+
+# macOS files
+.DS_Store

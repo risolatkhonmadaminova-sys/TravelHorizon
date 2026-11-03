@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
@@ -93,12 +93,27 @@
         <p data-i18n="about.page.intro">And we’d love to show you around.</p>
       </section>
       <section class="about-story">
-        <div
+        <figure
           class="about-photo"
-          role="img"
-          aria-label="A Kyrgyz mountain valley at sunrise"
+          aria-label="Karakol Peak in the Terskey Ala-Too range"
           data-i18n-aria="about.image"
-        ></div>
+        >
+          <figcaption class="photo-attribution">
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Pik_Karakolskiy.JPG"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Tadeáš Gregor</a
+            >
+            ·
+            <a
+              href="https://creativecommons.org/licenses/by-sa/3.0/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >CC BY-SA 3.0</a
+            >
+          </figcaption>
+        </figure>
         <div class="about-story-copy">
           <p class="eyebrow" data-i18n="about.story.kicker">ROOTED HERE</p>
           <h2 data-i18n="about.story.title" data-i18n-html="true">
@@ -160,8 +175,9 @@
       >
       <p data-i18n="footer.note">Made with care in Kyrgyzstan.</p>
       <div class="footer-links">
-        <a href="mailto:hello@travelhorizon.kg" data-i18n="footer.contact"
-          >Say hello ↗</a
+        <a href="contacts.html#contact-form" data-i18n="footer.contact"
+          >Send an enquiry ↗</a
+        ><a href="admin.html">Site editor</a
         ><span data-i18n="footer.copyright">© 2026 TravelHorizon</span>
       </div>
     </footer>
