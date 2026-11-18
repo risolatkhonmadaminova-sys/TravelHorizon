@@ -1,0 +1,545 @@
+{
+  "tours": [
+    {
+      "id": "ala",
+      "fields": {
+        "en": {
+          "label": "01 / THE ALA-ARCHA GORGE",
+          "location": "BISHKEK · 5 HOURS",
+          "title": "Ala-Archa, on foot",
+          "price": "from $70 / traveler",
+          "activity": "↟ Guided walk + Kyrgyz picnic",
+          "season": "◷ Route options vary",
+          "description": "A guided visit to the national park, with a choice of walk and a Kyrgyz picnic.",
+          "includes": "Guided park visit, moderate walk option, and Kyrgyz picnic. Route depends on the selected option.",
+          "alt": "Ala-Archa gorge in Chuy Region, Kyrgyzstan"
+        },
+        "ru": {
+          "label": "01 / УЩЕЛЬЕ АЛА-АРЧА",
+          "location": "БИШКЕК · 5 ЧАСОВ",
+          "title": "Ала-Арча пешком",
+          "price": "от $70 / человека",
+          "activity": "↟ Прогулка с гидом + кыргызский пикник",
+          "season": "◷ Маршруты различаются",
+          "description": "Экскурсия в национальный парк с прогулкой на выбор и кыргызским пикником.",
+          "includes": "Посещение парка с гидом, вариант прогулки средней сложности и кыргызский пикник. Маршрут зависит от выбранной программы.",
+          "alt": "Ущелье Ала-Арча в Чуйской области Кыргызстана"
+        },
+        "ky": {
+          "label": "01 / АЛА-АРЧА КАПЧЫГАЙЫ",
+          "location": "БИШКЕК · 5 СААТ",
+          "title": "Ала-Арчаны жөө кыдыруу",
+          "price": "бир адамга $70дан",
+          "activity": "↟ Гид коштогон жүрүш + кыргыз пикниги",
+          "season": "◷ Маршруттар ар башка",
+          "description": "Улуттук паркка гид менен барып, тандалган жөө жүрүштөн жана кыргыз пикнигинен ырахат алыңыз.",
+          "includes": "Паркка гид менен баруу, орточо деңгээлдеги жүрүш варианты жана кыргыз пикниги. Маршрут тандалган вариантка жараша болот.",
+          "alt": "Кыргызстандын Чүй облусундагы Ала-Арча капчыгайы"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg/960px-%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg",
+        "credit": "Nikolai Bulykin",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_(3).jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "tags": [
+        "trekking"
+      ]
+    },
+    {
+      "id": "song",
+      "fields": {
+        "en": {
+          "label": "02 / THE HIGH-COUNTRY LAKE",
+          "location": "NARYN · 1 NIGHT",
+          "title": "A night at Song-Kul",
+          "price": "Rate on request",
+          "activity": "⌂ Yurt stay + host-family meal",
+          "season": "◷ 20 May — 15 Oct",
+          "description": "Travel from Kochkor over Kalmak Ashuu Pass, meet a host family, and stay beside the high-altitude lake.",
+          "includes": "Transfer over Kalmak Ashuu Pass, a traditional meal, and one night in a yurt.",
+          "alt": "Yurts beside Song-Kul Lake, Naryn Region"
+        },
+        "ru": {
+          "label": "02 / ВЫСОКОГОРНОЕ ОЗЕРО",
+          "location": "НАРЫН · 1 НОЧЬ",
+          "title": "Ночь у Сон-Кёля",
+          "price": "Цена по запросу",
+          "activity": "⌂ Юрта + ужин у местной семьи",
+          "season": "◷ 20 мая — 15 окт",
+          "description": "Путь из Кочкора через перевал Калмак-Ашуу, знакомство с семьёй и ночёвка у высокогорного озера.",
+          "includes": "Трансфер через перевал Калмак-Ашуу, традиционная еда и ночь в юрте.",
+          "alt": "Юрты у озера Сон-Кёль в Нарынской области"
+        },
+        "ky": {
+          "label": "02 / БИЙИК ТОО КӨЛҮ",
+          "location": "НАРЫН · 1 ТҮН",
+          "title": "Соң-Көлдө бир түн",
+          "price": "Баасы суроо-талап боюнча",
+          "activity": "⌂ Боз үй + үй-бүлөлүк тамак",
+          "season": "◷ 20-май — 15-окт",
+          "description": "Кочкордон Калмак-Ашуу ашуусу аркылуу өтүп, жергиликтүү үй-бүлө менен таанышып, бийик тоо көлүнүн жанында түн өткөрүңүз.",
+          "includes": "Калмак-Ашуу ашуусу аркылуу трансфер, салттуу тамак жана боз үйдө бир түн.",
+          "alt": "Кыргызстандын Нарын облусундагы Соң-Көлдүн жанындагы боз үйлөр"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg/960px-Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg",
+        "credit": "Kalpak Travel",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyrgyzstan_yurts_at_Song_Kul_(48221119097).jpg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+      },
+      "tags": [
+        "water",
+        "culture"
+      ]
+    },
+    {
+      "id": "issyk",
+      "fields": {
+        "en": {
+          "label": "03 / THE INNER SEA",
+          "location": "BISHKEK · 11 HOURS",
+          "title": "Issyk-Kul, canyons & local food",
+          "price": "from $80 / traveler",
+          "activity": "⌁ Lake shore + canyon walk",
+          "season": "◷ Swimming in warm months",
+          "description": "A full day from Bishkek linking Burana Tower, Kok-Moinok Canyon, and the Issyk-Kul shore.",
+          "includes": "Pickup, transport, guide, lunch, bottled water, Burana Tower, a canyon walk, and a stop by the lake.",
+          "alt": "The southern shore of Issyk-Kul Lake, Kyrgyzstan"
+        },
+        "ru": {
+          "label": "03 / ВНУТРЕННЕЕ МОРЕ",
+          "location": "БИШКЕК · 11 ЧАСОВ",
+          "title": "Иссык-Куль, каньоны и местная кухня",
+          "price": "от $80 / человека",
+          "activity": "⌁ Берег озера + прогулка по каньону",
+          "season": "◷ Купание в тёплый сезон",
+          "description": "Насыщенная поездка из Бишкека: башня Бурана, каньон Кок-Мойнок и берег Иссык-Куля.",
+          "includes": "Трансфер, транспорт, гид, обед, вода, башня Бурана, прогулка по каньону и остановка у озера.",
+          "alt": "Южный берег озера Иссык-Куль, Кыргызстан"
+        },
+        "ky": {
+          "label": "03 / ИЧКИ ДЕҢИЗ",
+          "location": "БИШКЕК · 11 СААТ",
+          "title": "Ысык-Көл, капчыгайлар жана жергиликтүү тамак",
+          "price": "бир адамга $80дан",
+          "activity": "⌁ Көл жээги + капчыгайдагы жүрүш",
+          "season": "◷ Жылуу мезгилде сууга түшүү",
+          "description": "Бишкектен бир күндүк сапар: Бурана мунарасы, Көк-Мойнок капчыгайы жана Ысык-Көлдүн жээги.",
+          "includes": "Тосуп алуу, транспорт, гид, түшкү тамак, суу, Бурана мунарасы, капчыгайдагы жүрүш жана көл жээгиндеги аялдама.",
+          "alt": "Кыргызстандагы Ысык-Көлдүн түштүк жээги"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Issyk-Kul%2C_Kyrgyzstan_%2843713946455%29.jpg/960px-Issyk-Kul%2C_Kyrgyzstan_%2843713946455%29.jpg",
+        "credit": "Ninara",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Issyk-Kul,_Kyrgyzstan_(43713946455).jpg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+      },
+      "tags": [
+        "water",
+        "culture"
+      ]
+    },
+    {
+      "id": "kelsuu",
+      "fields": {
+        "en": {
+          "label": "04 / THE REMOTE FRONTIER",
+          "location": "NARYN · 12 KM HORSE RIDE",
+          "title": "Kel-Suu by horseback",
+          "price": "Rate on request",
+          "activity": "↟ Horse ride + yurt night",
+          "season": "◷ 1 Jun — 30 Sep",
+          "description": "Ride to the lake with a local horse team, then stay with a host family in a yurt.",
+          "includes": "12 km horseback ride and one night in a yurt. Kel-Suu is in a controlled area; check current checkpoint and permit requirements before travel.",
+          "alt": "Kel-Suu Lake in the Naryn Region of Kyrgyzstan"
+        },
+        "ru": {
+          "label": "04 / ДАЛЬНИЙ КРАЙ",
+          "location": "НАРЫН · 12 КМ ВЕРХОМ",
+          "title": "Кель-Суу верхом",
+          "price": "Цена по запросу",
+          "activity": "↟ Конная поездка + ночь в юрте",
+          "season": "◷ 1 июн — 30 сен",
+          "description": "Конная поездка к озеру с местной командой и ночёвка в юрте у принимающей семьи.",
+          "includes": "12 км верхом и ночь в юрте. Кель-Суу находится в контролируемой зоне: до поездки уточните требования к пропуску и прохождению поста.",
+          "alt": "Озеро Кель-Суу в Нарынской области Кыргызстана"
+        },
+        "ky": {
+          "label": "04 / АЛЫСКЫ ЧЕК АРА",
+          "location": "НАРЫН · АТ МЕНЕН 12 КМ",
+          "title": "Көл-Сууга ат менен",
+          "price": "Баасы суроо-талап боюнча",
+          "activity": "↟ Ат жүрүшү + боз үйдө түнөө",
+          "season": "◷ 1-июнь — 30-сен",
+          "description": "Жергиликтүү ат командасы менен көлгө барып, үй-бүлөнүн боз үйүндө түн өткөрүңүз.",
+          "includes": "12 км ат жүрүшү жана боз үйдө бир түн. Көл-Суу көзөмөлдөнгөн аймакта: жолго чыгардан мурун өткөрмө жана уруксат талаптарын тактаңыз.",
+          "alt": "Кыргызстандын Нарын облусундагы Көл-Суу"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Kol-Suu.jpg/960px-Kol-Suu.jpg",
+        "credit": "Eventyrlys",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kol-Suu.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "tags": [
+        "water",
+        "culture"
+      ]
+    },
+    {
+      "id": "jetioguz",
+      "fields": {
+        "en": {
+          "label": "05 / RED ROCK & FAIRY-TALE CANYON",
+          "location": "KARAKOL · 10–11 HOURS",
+          "title": "Jeti-Oguz, Barskoon & Skazka",
+          "price": "from $120 / traveler",
+          "activity": "↟ Gorge, waterfall hike + canyon",
+          "season": "◷ Day trip from Karakol",
+          "description": "A long day out to Jeti-Oguz Gorge, Barskoon Waterfalls, and the red formations of Skazka Canyon.",
+          "includes": "Jeti-Oguz Gorge, a Barskoon waterfall walk, and Skazka Canyon. Lunch arrangements vary.",
+          "alt": "The red-rock ridge at Jeti-Oguz, Kyrgyzstan"
+        },
+        "ru": {
+          "label": "05 / КРАСНЫЕ СКАЛЫ И КАНЬОН СКАЗКА",
+          "location": "КАРАКОЛ · 10–11 ЧАСОВ",
+          "title": "Джети-Огуз, Барскоон и Сказка",
+          "price": "от $120 / человека",
+          "activity": "↟ Ущелье, водопад и каньон",
+          "season": "◷ Поездка из Каракола",
+          "description": "Долгий день среди скал Джети-Огуза, водопадов Барскоона и красных форм каньона Сказка.",
+          "includes": "Ущелье Джети-Огуз, прогулка к водопаду Барскоон и каньон Сказка. Обед зависит от программы.",
+          "alt": "Красные скалы Джети-Огуза в Кыргызстане"
+        },
+        "ky": {
+          "label": "05 / КЫЗЫЛ АСКАЛАР ЖАНА ЖОМОК КАНЬОНУ",
+          "location": "КАРАКОЛ · 10–11 СААТ",
+          "title": "Жети-Өгүз, Барскоон жана Сказка",
+          "price": "бир адамга $120дан",
+          "activity": "↟ Капчыгай, шаркыратма + каньон",
+          "season": "◷ Караколдон бир күндүк сапар",
+          "description": "Жети-Өгүздүн аскаларына, Барскоон шаркыратмаларына жана Сказканын кызыл формаларына бир күндүк сапар.",
+          "includes": "Жети-Өгүз капчыгайы, Барскоон шаркыратмасына жүрүш жана Сказка каньону. Түшкү тамак программанын шартына жараша болот.",
+          "alt": "Кыргызстандагы Жети-Өгүздүн кызыл аскалуу кыркасы"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg/960px-Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg",
+        "credit": "Peretz Partensky",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Red_Rock_Ridge_at_Djeti-Oguz_(3975957247).jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
+      },
+      "tags": [
+        "trekking",
+        "culture"
+      ]
+    },
+    {
+      "id": "karakol",
+      "fields": {
+        "en": {
+          "label": "06 / KARAKOL ON HORSEBACK",
+          "location": "KARAKOL · 4 HOURS",
+          "title": "Karakol horse ride & yurt",
+          "price": "from $120 / traveler",
+          "activity": "↟ Horse ride + tea with hosts",
+          "season": "◷ Confirm details before booking",
+          "description": "Ride mountain trails outside Karakol, visit a yurt, and share tea with local hosts.",
+          "includes": "About 2–3 hours on horseback, a yurt visit, and tea. Ask about guide language and helmet availability when enquiring.",
+          "alt": "Karakol Peak in the Terskey Ala-Too range"
+        },
+        "ru": {
+          "label": "06 / КАРАКОЛ ВЕРХОМ",
+          "location": "КАРАКОЛ · 4 ЧАСА",
+          "title": "Верхом в Караколе и чай в юрте",
+          "price": "от $120 / человека",
+          "activity": "↟ Конная прогулка + чай у хозяев",
+          "season": "◷ Уточните детали перед бронированием",
+          "description": "Прогулка верхом по горным тропам у Каракола, посещение юрты и чай с местными хозяевами.",
+          "includes": "Около 2–3 часов верхом, посещение юрты и чай. При запросе уточните язык гида и наличие шлемов.",
+          "alt": "Пик Каракол в хребте Терскей-Ала-Тоо"
+        },
+        "ky": {
+          "label": "06 / КАРАКОЛГО АТ МЕНЕН",
+          "location": "КАРАКОЛ · 4 СААТ",
+          "title": "Караколдо ат жүрүшү жана боз үй",
+          "price": "бир адамга $120дан",
+          "activity": "↟ Ат жүрүшү + үй ээлери менен чай",
+          "season": "◷ Брондоодон мурун тактаңыз",
+          "description": "Караколдун сыртындагы тоо жолдорунда ат минип, боз үйгө кирип, жергиликтүү үй ээлери менен чай ичиңиз.",
+          "includes": "Ат менен болжол менен 2–3 саат жүрүү, боз үйгө баруу жана чай. Суроо жөнөткөндө гиддин тилин жана туулга бар-жогун тактаңыз.",
+          "alt": "Тескей Ала-Тоодогу Каракол чокусу"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6c/Pik_Karakolskiy.JPG/960px-Pik_Karakolskiy.JPG",
+        "credit": "Tadeáš Gregor",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pik_Karakolskiy.JPG",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/"
+      },
+      "tags": [
+        "trekking",
+        "culture"
+      ]
+    }
+  ],
+  "experiences": [
+    {
+      "id": "horse",
+      "fields": {
+        "en": {
+          "kicker": "MOVE WITH THE LAND",
+          "title": "Horse riding in Jeti-Oguz",
+          "location": "JETI-OGUZ · 5–12 HOURS",
+          "price": "from $155 / traveler",
+          "copy": "Reach the gorge by 4×4, ride with a local team, and stop for tea in a yurt.",
+          "includes": "The listing describes about four hours on horseback; a waterfall hike depends on the selected route and group.",
+          "alt": "The red-rock ridge at Jeti-Oguz, Kyrgyzstan"
+        },
+        "ru": {
+          "kicker": "В РИТМЕ ЗЕМЛИ",
+          "title": "Верхом в Джети-Огузе",
+          "location": "ДЖЕТИ-ОГУЗ · 5–12 ЧАСОВ",
+          "price": "от $155 / человека",
+          "copy": "Поездка к ущелью на внедорожнике, конная прогулка и чай у местных хозяев в юрте.",
+          "includes": "В описании указано около четырёх часов верхом; поход к водопаду зависит от выбранного маршрута и группы.",
+          "alt": "Красные скалы Джети-Огуза в Кыргызстане"
+        },
+        "ky": {
+          "kicker": "ЖЕРДИН ЫРГАГЫНДА",
+          "title": "Жети-Өгүздө ат минүү",
+          "location": "ЖЕТИ-ӨГҮЗ · 5–12 СААТ",
+          "price": "бир адамга $155дан",
+          "copy": "Капчыгайга жол тандабас менен барып, жергиликтүү команда менен ат минип, боз үйдө чай ичиңиз.",
+          "includes": "Баракта болжол менен төрт саат ат минүү көрсөтүлгөн; шаркыратмага жөө жүрүш маршрутка жана топко жараша болот.",
+          "alt": "Кыргызстандагы Жети-Өгүздүн кызыл аскалуу кыркасы"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/ba/Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg/960px-Red_Rock_Ridge_at_Djeti-Oguz_%283975957247%29.jpg",
+        "credit": "Peretz Partensky",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Red_Rock_Ridge_at_Djeti-Oguz_(3975957247).jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
+      },
+      "topic": "horse",
+      "listingUrl": "https://www.getyourguide.com/jeti-oguz-l236998/karakol-jeti-oguz-gorge-tour-with-horse-ride-t1338997/"
+    },
+    {
+      "id": "yurt",
+      "fields": {
+        "en": {
+          "kicker": "A NIGHT TO REMEMBER",
+          "title": "A yurt night at Song-Kul",
+          "location": "NARYN · 1 NIGHT",
+          "price": "Rate on request",
+          "copy": "Cross Kalmak Ashuu Pass, meet a host family, and spend the night by the lake.",
+          "includes": "The route page describes a transfer, traditional meal, and yurt overnight. The operator does not publish a price.",
+          "alt": "Yurts beside Song-Kul Lake, Naryn Region"
+        },
+        "ru": {
+          "kicker": "НОЧЬ, КОТОРУЮ ПОМНЯТ",
+          "title": "Ночь в юрте у Сон-Кёля",
+          "location": "НАРЫН · 1 НОЧЬ",
+          "price": "Цена по запросу",
+          "copy": "Перевалите через Калмак-Ашуу, познакомьтесь с принимающей семьёй и останьтесь на берегу озера.",
+          "includes": "На странице маршрута указаны трансфер, традиционная еда и ночь в юрте. Оператор не публикует цену.",
+          "alt": "Юрты у озера Сон-Кёль в Нарынской области"
+        },
+        "ky": {
+          "kicker": "ЭСТЕ КАЛЧУ ТҮН",
+          "title": "Соң-Көлдө боз үйдө түнөө",
+          "location": "НАРЫН · 1 ТҮН",
+          "price": "Баасы суроо-талап боюнча",
+          "copy": "Калмак-Ашуу ашуусунан өтүп, жергиликтүү үй-бүлө менен таанышып, көлдүн жээгинде түн өткөрүңүз.",
+          "includes": "Маршрут барагында трансфер, салттуу тамак жана боз үйдө түнөө айтылган. Оператор бааны жарыялаган эмес.",
+          "alt": "Кыргызстандын Нарын облусундагы Соң-Көлдүн жанындагы боз үйлөр"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0a/Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg/960px-Kyrgyzstan_yurts_at_Song_Kul_%2848221119097%29.jpg",
+        "credit": "Kalpak Travel",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kyrgyzstan_yurts_at_Song_Kul_(48221119097).jpg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+      },
+      "topic": "yurt",
+      "listingUrl": "https://nomadsland.travel/en/offers/journeys/kochkor-batay-aral-song-kul"
+    },
+    {
+      "id": "trek",
+      "fields": {
+        "en": {
+          "kicker": "TAKE THE LONG WAY",
+          "title": "Ala-Archa guided hike",
+          "location": "CHUY · 5 HOURS",
+          "price": "from $70 / traveler",
+          "copy": "Choose a guided walk in the national park, then pause for a Kyrgyz picnic.",
+          "includes": "The published listing offers walk options and a picnic; route difficulty varies by option.",
+          "alt": "Ala-Archa gorge in Chuy Region, Kyrgyzstan"
+        },
+        "ru": {
+          "kicker": "ВЫБРАТЬ ДЛИННЫЙ ПУТЬ",
+          "title": "Прогулка с гидом по Ала-Арче",
+          "location": "ЧУЙ · 5 ЧАСОВ",
+          "price": "от $70 / человека",
+          "copy": "Выберите прогулку по национальному парку и устройте паузу на кыргызский пикник.",
+          "includes": "В опубликованной программе есть варианты прогулок и пикник; сложность зависит от выбранного маршрута.",
+          "alt": "Ущелье Ала-Арча в Чуйской области Кыргызстана"
+        },
+        "ky": {
+          "kicker": "УЗАК ЖОЛДУ ТАНДАҢЫЗ",
+          "title": "Ала-Арчада гид менен жүрүш",
+          "location": "ЧҮЙ · 5 СААТ",
+          "price": "бир адамга $70дан",
+          "copy": "Улуттук парктагы жөө жүрүштү тандап, кыргыз пикнигинен даам татыңыз.",
+          "includes": "Жарыяланган сунушта жүрүштүн варианттары жана пикник бар; татаалдыгы тандалган маршрутка жараша өзгөрөт.",
+          "alt": "Кыргызстандын Чүй облусундагы Ала-Арча капчыгайы"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg/960px-%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_%283%29.jpg",
+        "credit": "Nikolai Bulykin",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BB%D0%B0-%D0%90%D1%80%D1%87%D0%B0_%D1%81%D0%B2%D0%B5%D1%80%D1%85%D1%83_(3).jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "topic": "trek",
+      "listingUrl": "https://www.getyourguide.com/bishkek-l1420/from-bishkek-ala-archa-national-park-guided-tour-picnic-t1084517/"
+    },
+    {
+      "id": "canyon",
+      "fields": {
+        "en": {
+          "kicker": "FOLLOW THE RED ROCKS",
+          "title": "Canyons & waterfalls",
+          "location": "KARAKOL · 10–11 HOURS",
+          "price": "from $120 / traveler",
+          "copy": "Walk among Skazka Canyon’s red formations and hike to Barskoon Waterfalls.",
+          "includes": "Lunch is described as a local cafe or picnic depending on arrangements.",
+          "alt": "Canyons & waterfalls"
+        },
+        "ru": {
+          "kicker": "ПО СЛЕДАМ КРАСНЫХ СКАЛ",
+          "title": "Каньоны и водопады",
+          "location": "КАРАКОЛ · 10–11 ЧАСОВ",
+          "price": "от $120 / человека",
+          "copy": "Пройдитесь среди красных скал каньона Сказка и поднимитесь к водопадам Барскоона.",
+          "includes": "Обед — в местном кафе или на пикнике, в зависимости от договорённостей.",
+          "alt": "Каньоны и водопады"
+        },
+        "ky": {
+          "kicker": "КЫЗЫЛ АСКАЛАРГА ЖОЛ",
+          "title": "Каньондор жана шаркыратмалар",
+          "location": "КАРАКОЛ · 10–11 СААТ",
+          "price": "бир адамга $120дан",
+          "copy": "Сказканын кызыл аскаларынын арасынан өтүп, Барскоон шаркыратмаларына жөө көтөрүлүңүз.",
+          "includes": "Түшкү тамак келишимге жараша кафеде же пикник түрүндө берилет.",
+          "alt": "Каньондор жана шаркыратмалар"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Fairy_Tale_Canyon_%2822-06-2026%29_%2842%29.jpg/960px-Fairy_Tale_Canyon_%2822-06-2026%29_%2842%29.jpg",
+        "credit": "Incall",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fairy_Tale_Canyon_(22-06-2026)_(42).jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/"
+      },
+      "topic": "canyon",
+      "listingUrl": "https://www.getyourguide.com/barskoon-l236235/from-karakol-jeti-oguz-barskoon-skazka-canyon-day-trip-t1421261/"
+    },
+    {
+      "id": "food",
+      "fields": {
+        "en": {
+          "kicker": "PULL UP A CHAIR",
+          "title": "A traditional Kyrgyz meal",
+          "location": "BISHKEK → ISSYK-KUL · 11 HOURS",
+          "price": "from $80 / traveler",
+          "copy": "A local lunch is part of a day trip linking Burana Tower, a canyon, and the lake.",
+          "includes": "The listing names kattama, cream, tea, and a hot dish, with a vegan option; confirm the menu for your date.",
+          "alt": "A traditional Kyrgyz meal"
+        },
+        "ru": {
+          "kicker": "К СТОЛУ",
+          "title": "Традиционное кыргызское блюдо",
+          "location": "БИШКЕК → ИССЫК-КУЛЬ · 11 ЧАСОВ",
+          "price": "от $80 / человека",
+          "copy": "Местный обед — часть поездки к башне Бурана, каньону и озеру.",
+          "includes": "В описании указаны каттама, сливки, чай и горячее блюдо; есть веганский вариант. Меню лучше уточнить на вашу дату.",
+          "alt": "Традиционное кыргызское блюдо"
+        },
+        "ky": {
+          "kicker": "ДАСТОРКОНГО КЕЛИҢИЗ",
+          "title": "Салттуу кыргыз тамагы",
+          "location": "БИШКЕК → ЫСЫК-КӨЛ · 11 СААТ",
+          "price": "бир адамга $80дан",
+          "copy": "Жергиликтүү түшкү тамак Бурана мунарасына, капчыгайга жана көлгө барган сапардын бир бөлүгү.",
+          "includes": "Баракта каттама, каймак, чай жана ысык тамак, ошондой эле веган варианты айтылган; күндүн менюсун тактаңыз.",
+          "alt": "Салттуу кыргыз тамагы"
+        }
+      },
+      "image": {
+        "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/59/Bishkek%2C_Kirgisistan_%2815601856463%29.jpg/960px-Bishkek%2C_Kirgisistan_%2815601856463%29.jpg",
+        "credit": "Thomas Depenbusch",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bishkek,_Kirgisistan_(15601856463).jpg",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0/"
+      },
+      "topic": "food",
+      "listingUrl": "https://www.getyourguide.com/bishkek-l1420/all-inclusive-day-trip-burana-canyons-issyk-kul-pickup-t1226151/"
+    },
+    {
+      "id": "eagle",
+      "fields": {
+        "en": {
+          "kicker": "A LIVING NOMADIC TRADITION",
+          "title": "Eagle-hunter demonstration",
+          "location": "ISSYK-KUL SOUTH SHORE · 2 DAYS",
+          "price": "from $350 / traveler",
+          "copy": "A local eagle-hunter demonstration is described as part of this two-day small-group trip.",
+          "includes": "The package listing also describes a yurt night, Skazka Canyon, and Barskoon Waterfall. Confirm the demonstration schedule and inclusions for your date.",
+          "alt": "Eagle-hunter demonstration"
+        },
+        "ru": {
+          "kicker": "ЖИВАЯ КОЧЕВАЯ ТРАДИЦИЯ",
+          "title": "Показ охоты с беркутом",
+          "location": "ЮЖНЫЙ БЕРЕГ ИССЫК-КУЛЯ · 2 ДНЯ",
+          "price": "от $350 / человека",
+          "copy": "В программе двухдневной поездки для небольшой группы описана встреча с местным беркутчи.",
+          "includes": "Также в описании указаны ночь в юрте, каньон Сказка и водопад Барскоон. Уточните расписание показа и состав поездки на выбранную дату.",
+          "alt": "Показ охоты с беркутом"
+        },
+        "ky": {
+          "kicker": "КӨЧМӨНДҮКТҮН ЖАНДУУ САЛТЫ",
+          "title": "Бүркүтчү менен көрсөтмө",
+          "location": "ЫСЫК-КӨЛДҮН ТҮШТҮК ЖЭЭГИ · 2 КҮН",
+          "price": "бир адамга $350дан",
+          "copy": "Чакан топ үчүн эки күндүк сапардын программасында жергиликтүү бүркүтчүнүн көрсөтмөсү бар.",
+          "includes": "Пакетте боз үйдө түнөө, Сказка каньону жана Барскоон шаркыратмасы да көрсөтүлгөн. Көрсөтүүнүн убактысын жана кызматтарды күнүңүзгө жараша тактаңыз.",
+          "alt": "Бүркүтчү менен көрсөтмө"
+        }
+      },
+      "image": {
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/f0/Eagle_Hunters_of_Yore._%283968072751%29.jpg",
+        "credit": "Peretz Partensky",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eagle_Hunters_of_Yore._(3968072751).jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0/"
+      },
+      "topic": "eagle",
+      "listingUrl": "https://www.getyourguide.com/barskoon-l236235/2-day-small-group-issyk-kul-adventure-with-yurt-stay-t1343501/"
+    }
+  ]
+}

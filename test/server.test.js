@@ -1,11 +1,9 @@
 const assert = require("node:assert/strict");
 const { spawn } = require("node:child_process");
-const fs = require("node:fs/promises");
-const http = require("node:http");
-const os = require("node:os");
 const path = require("node:path");
 const { afterEach, beforeEach, test } = require("node:test");
 const { createApplication } = require("../server");
+const seedCatalog = require("../data/catalog.json");
 
 const adminUsername = "travel-admin";
 const adminPassword = "a-long-test-password";
@@ -46,18 +44,40 @@ const catalogOverride = {
 };
 
 let server;
-let contentFile;
-let catalogFile;
 let origin;
-let temporaryDirectory;
 let telegramCalls;
+let store;
+
+function createMemoryStore({
+  content = { en: {}, ru: {}, ky: {} },
+  catalog = seedCatalog,
+} = {}) {
+  let savedContent = structuredClone(content);
+  let savedCatalog = catalog ? structuredClone(catalog) : null;
+  return {
+    async getContent() {
+      return structuredClone(savedContent);
+    },
+    async setContent(nextContent) {
+      savedContent = structuredClone(nextContent);
+    },
+    async getCatalog() {
+      return savedCatalog ? structuredClone(savedCatalog) : null;
+    },
+    async replaceCatalog(nextCatalog) {
+      savedCatalog = structuredClone(nextCatalog);
+    },
+    async clearCatalog() {
+      savedCatalog = null;
+    },
+  };
+}
 
 async function startServer() {
   const application = createApplication({
+    store,
     adminUsername,
     adminPassword,
-    contentFile,
-    catalogFile,
     telegramBotToken: "test-bot-token",
     telegramChatId: "-100123456",
     telegramApiBase: "https://telegram.test",
@@ -71,8 +91,6 @@ async function startServer() {
     },
   });
   server = application.server;
-  await application.loadContent();
-  await application.loadCatalog();
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
 }
@@ -99,11 +117,7 @@ async function getCsrfToken(cookie) {
 
 beforeEach(async () => {
   telegramCalls = [];
-  temporaryDirectory = await fs.mkdtemp(
-    path.join(os.tmpdir(), "travelhorizon-test-"),
-  );
-  contentFile = path.join(temporaryDirectory, "content.json");
-  catalogFile = path.join(temporaryDirectory, "catalog.json");
+  store = createMemoryStore();
   await startServer();
 });
 
@@ -113,7 +127,6 @@ afterEach(async () => {
       server.close((error) => (error ? reject(error) : resolve())),
     );
   }
-  await fs.rm(temporaryDirectory, { recursive: true, force: true });
 });
 
 test("admin route shows sign-in until a valid admin session exists", async () => {
@@ -202,7 +215,6 @@ test("content writes require an admin session and CSRF token and persist", async
   });
   assert.equal(write.status, 200);
   assert.deepEqual(await (await fetch(`${origin}/api/content`)).json(), contentOverride);
-  assert.deepEqual(JSON.parse(await fs.readFile(contentFile, "utf8")), contentOverride);
 
   await new Promise((resolve, reject) =>
     server.close((error) => (error ? reject(error) : resolve())),
@@ -265,6 +277,36 @@ test("catalog changes require an admin session, validate photos, and persist", a
   });
   assert.equal(rejected.status, 400);
 
+  const missingTitleCatalog = structuredClone(catalogOverride);
+  missingTitleCatalog.tours[0].fields.en.title = "";
+  const missingTitle = await fetch(`${origin}/api/admin/catalog`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie,
+      Origin: origin,
+      "X-CSRF-Token": csrfToken,
+    },
+    body: JSON.stringify({ catalog: missingTitleCatalog }),
+  });
+  assert.equal(missingTitle.status, 400);
+  assert.match((await missingTitle.json()).error, /en title is required/);
+
+  const missingAltCatalog = structuredClone(catalogOverride);
+  missingAltCatalog.tours[0].fields.en.alt = "";
+  const missingAlt = await fetch(`${origin}/api/admin/catalog`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie,
+      Origin: origin,
+      "X-CSRF-Token": csrfToken,
+    },
+    body: JSON.stringify({ catalog: missingAltCatalog }),
+  });
+  assert.equal(missingAlt.status, 400);
+  assert.match((await missingAlt.json()).error, /en alt is required/);
+
   const saved = await fetch(`${origin}/api/admin/catalog`, {
     method: "PUT",
     headers: {
@@ -280,7 +322,6 @@ test("catalog changes require an admin session, validate photos, and persist", a
     (await (await fetch(`${origin}/api/catalog`)).json()).catalog,
     catalogOverride,
   );
-  assert.deepEqual(JSON.parse(await fs.readFile(catalogFile, "utf8")), catalogOverride);
 
   const contact = await fetch(`${origin}/api/contact`, {
     method: "POST",
@@ -354,6 +395,39 @@ test("content policy allows the licensed Wikimedia image hosts only", async () =
     /img-src 'self' https:\/\/thumb\.wikimedia\.org https:\/\/upload\.wikimedia\.org/,
   );
   assert.doesNotMatch(policy, /unsplash/i);
+});
+
+test("Swagger UI documents the API without exposing runtime secrets", async () => {
+  const response = await fetch(`${origin}/api-docs`);
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /text\/html/);
+  assert.match(
+    response.headers.get("content-security-policy"),
+    /script-src 'self' 'unsafe-inline'/,
+  );
+  const html = await response.text();
+  assert.match(html, /TravelHorizon API/);
+  assert.match(html, /swagger-ui-bundle\.js/);
+  assert.doesNotMatch(
+    html,
+    /TELEGRAM_BOT_TOKEN|TELEGRAM_CHAT_ID|ADMIN_PASSWORD|DATABASE_URL|test-bot-token|a-long-test-password/,
+  );
+
+  const initialization = await fetch(`${origin}/api-docs/swagger-ui-init.js`);
+  assert.equal(initialization.status, 200);
+  const configuration = await initialization.text();
+  assert.match(configuration, /\/api\/admin\/catalog/);
+  assert.match(configuration, /\/api\/contact/);
+  assert.doesNotMatch(
+    configuration,
+    /TELEGRAM_BOT_TOKEN|TELEGRAM_CHAT_ID|ADMIN_PASSWORD|DATABASE_URL|test-bot-token|a-long-test-password/,
+  );
+
+  const bundle = await fetch(`${origin}/api-docs/swagger-ui-bundle.js`, {
+    method: "HEAD",
+  });
+  assert.equal(bundle.status, 200);
+  assert.match(bundle.headers.get("content-type"), /javascript/);
 });
 
 test("limits repeated failed sign-in attempts", async () => {
@@ -511,12 +585,12 @@ test("rate limits contact enquiries", async () => {
 
 test("public APIs work without environment configuration and admin remains disabled", async () => {
   const application = createApplication({
+    store: createMemoryStore(),
     adminUsername: "",
     adminPassword: "",
     telegramBotToken: "",
     telegramChatId: "",
   });
-  await Promise.all([application.loadContent(), application.loadCatalog()]);
   const unconfiguredServer = application.server;
   await new Promise((resolve) =>
     unconfiguredServer.listen(0, "127.0.0.1", resolve),
@@ -594,17 +668,14 @@ test("public APIs work without environment configuration and admin remains disab
   }
 });
 
-test("public APIs return JSON when ignored data files are not deployed", async () => {
-  const missingDataDirectory = path.join(temporaryDirectory, "not-deployed");
+test("public APIs return JSON when the database has no imported content", async () => {
   const application = createApplication({
-    contentFile: path.join(missingDataDirectory, "content.json"),
-    catalogFile: path.join(missingDataDirectory, "catalog.json"),
+    store: createMemoryStore({ content: {}, catalog: null }),
     adminUsername: "",
     adminPassword: "",
     telegramBotToken: "",
     telegramChatId: "",
   });
-  await Promise.all([application.loadContent(), application.loadCatalog()]);
   const missingDataServer = application.server;
   await new Promise((resolve) =>
     missingDataServer.listen(0, "127.0.0.1", resolve),
@@ -634,20 +705,13 @@ test("public APIs return JSON when ignored data files are not deployed", async (
   }
 });
 
-test("server starts without secrets on the Render host and serves its APIs", async () => {
+test("server refuses to start when DATABASE_URL is not configured", async () => {
   const projectDirectory = path.join(__dirname, "..");
-  const portServer = http.createServer();
-  await new Promise((resolve) => portServer.listen(0, "127.0.0.1", resolve));
-  const port = portServer.address().port;
-  await new Promise((resolve, reject) =>
-    portServer.close((error) => (error ? reject(error) : resolve())),
-  );
 
   const child = spawn(process.execPath, ["server.js"], {
     cwd: projectDirectory,
     env: {
       PATH: process.env.PATH || "",
-      PORT: String(port),
       NODE_ENV: "production",
     },
     stdio: ["ignore", "pipe", "pipe"],
@@ -660,33 +724,10 @@ test("server starts without secrets on the Render host and serves its APIs", asy
     output += chunk;
   });
 
-  try {
-    const origin = `http://127.0.0.1:${port}`;
-    let response;
-    for (let attempt = 0; attempt < 50; attempt += 1) {
-      if (child.exitCode !== null) {
-        throw new Error(`Server exited before becoming ready: ${output}`);
-      }
-      try {
-        response = await fetch(`${origin}/api/content`);
-        break;
-      } catch {
-        await new Promise((resolve) => setTimeout(resolve, 100));
-      }
-    }
-
-    assert.ok(response, `Server did not start: ${output}`);
-    assert.match(output, new RegExp(`http://0\\.0\\.0\\.0:${port}`));
-    assert.equal(response.status, 200);
-    assert.deepEqual(await response.json(), { en: {}, ru: {}, ky: {} });
-
-    const catalogResponse = await fetch(`${origin}/api/catalog`);
-    assert.equal(catalogResponse.status, 200);
-    assert.match(catalogResponse.headers.get("content-type"), /application\/json/);
-  } finally {
-    if (child.exitCode === null) {
-      child.kill("SIGTERM");
-      await new Promise((resolve) => child.once("exit", resolve));
-    }
-  }
+  const exitCode = await new Promise((resolve, reject) => {
+    child.once("error", reject);
+    child.once("exit", (code) => resolve(code));
+  });
+  assert.equal(exitCode, 1, output);
+  assert.match(output, /DATABASE_URL must be configured/);
 });

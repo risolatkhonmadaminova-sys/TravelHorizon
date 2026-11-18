@@ -9,8 +9,10 @@ secrets/
 *.pem
 *.key
 
-# Local application data
-data/
+# Runtime data is ignored; these are versioned one-time database migration seeds.
+data/*
+!data/content.json
+!data/catalog.json
 node_modules/
 coverage/
 .render/

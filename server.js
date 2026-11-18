@@ -3,11 +3,43 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 const crypto = require("node:crypto");
+const express = require("express");
 const fs = require("node:fs/promises");
 const http = require("node:http");
 const path = require("node:path");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const {
+  assertJsonMigrationApplied,
+  createContentStore,
+  createPool,
+  initializeDatabase,
+} = require("./database");
 
 const rootDirectory = __dirname;
+const swaggerDocument = swaggerJsdoc({
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "TravelHorizon API",
+      version: "1.0.0",
+      description:
+        "API for TravelHorizon public catalog and content, contact enquiries, and protected admin operations.",
+    },
+    servers: [{ url: "/" }],
+  },
+  apis: [path.join(rootDirectory, "api", "openapi.js")],
+});
+const docsApplication = express();
+docsApplication.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument, {
+    customSiteTitle: "TravelHorizon API",
+  }),
+);
+const docsContentSecurityPolicy =
+  "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'";
 const mimeTypes = {
   ".css": "text/css; charset=utf-8",
   ".html": "text/html; charset=utf-8",
@@ -296,10 +328,9 @@ async function readJsonBody(request) {
 }
 
 function createApplication({
+  store,
   adminUsername,
   adminPassword,
-  contentFile = path.join(rootDirectory, "data", "content.json"),
-  catalogFile = path.join(rootDirectory, "data", "catalog.json"),
   secureCookies = false,
   telegramBotToken = process.env.TELEGRAM_BOT_TOKEN,
   telegramChatId = process.env.TELEGRAM_CHAT_ID,
@@ -319,30 +350,7 @@ function createApplication({
   const sessions = new Map();
   const loginAttempts = new Map();
   const contactAttempts = new Map();
-  let content = {};
-  let catalog;
-  let writeQueue = Promise.resolve();
-
-  async function loadContent() {
-    try {
-      const fileContent = await fs.readFile(contentFile, "utf8");
-      content = normalizeContent(JSON.parse(fileContent));
-    } catch (error) {
-      if (error.code === "ENOENT") return;
-      throw new Error(`Could not load content from ${contentFile}: ${error.message}`);
-    }
-  }
-
-  async function loadCatalog() {
-    try {
-      catalog = normalizeCatalog(JSON.parse(await fs.readFile(catalogFile, "utf8")));
-    } catch (error) {
-      if (error.code === "ENOENT") return;
-      throw new Error(
-        `Could not load catalog from ${catalogFile}: ${error.message}`,
-      );
-    }
-  }
+  if (!store) throw new Error("A PostgreSQL-backed content store is required.");
 
   function getSession(request) {
     const token = parseCookies(request.headers.cookie).get(sessionCookieName);
@@ -411,7 +419,7 @@ function createApplication({
     return value.replace(/[\u0000-\u001f\u007f]/g, " ").replace(/\s+/g, " ").trim();
   }
 
-  function getContactText(body) {
+  function getContactText(body, content, catalog) {
     if (!body || typeof body !== "object" || Array.isArray(body)) {
       throw new Error("Please check the enquiry form and try again.");
     }
@@ -552,46 +560,6 @@ function createApplication({
     ].join("; ");
   }
 
-  async function saveContent(nextContent) {
-    const serialized = JSON.stringify(nextContent, null, 2);
-    const write = writeQueue.then(async () => {
-      await fs.mkdir(path.dirname(contentFile), { recursive: true });
-      const temporaryFile = `${contentFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
-      await fs.writeFile(temporaryFile, serialized, {
-        encoding: "utf8",
-        flag: "wx",
-        mode: 0o600,
-      });
-      await fs.rename(temporaryFile, contentFile);
-    });
-    writeQueue = write.then(
-      () => undefined,
-      () => undefined,
-    );
-    await write;
-    content = nextContent;
-  }
-
-  async function saveCatalog(nextCatalog) {
-    const serialized = JSON.stringify(nextCatalog, null, 2);
-    const write = writeQueue.then(async () => {
-      await fs.mkdir(path.dirname(catalogFile), { recursive: true });
-      const temporaryFile = `${catalogFile}.${crypto.randomBytes(8).toString("hex")}.tmp`;
-      await fs.writeFile(temporaryFile, serialized, {
-        encoding: "utf8",
-        flag: "wx",
-        mode: 0o600,
-      });
-      await fs.rename(temporaryFile, catalogFile);
-    });
-    writeQueue = write.then(
-      () => undefined,
-      () => undefined,
-    );
-    await write;
-    catalog = nextCatalog;
-  }
-
   async function handleApi(request, response, pathname) {
     if (pathname.startsWith("/api/admin/") && !adminConfigured) {
       sendJson(response, 503, {
@@ -601,12 +569,12 @@ function createApplication({
     }
 
     if (pathname === "/api/content" && request.method === "GET") {
-      sendJson(response, 200, content);
+      sendJson(response, 200, await store.getContent());
       return;
     }
 
     if (pathname === "/api/catalog" && request.method === "GET") {
-      sendJson(response, 200, { catalog: catalog || null });
+      sendJson(response, 200, { catalog: await store.getCatalog() });
       return;
     }
 
@@ -635,9 +603,21 @@ function createApplication({
         return;
       }
 
+      let body;
+      try {
+        body = await readJsonBody(request);
+      } catch (error) {
+        sendJson(response, error.statusCode || 400, { error: error.message });
+        return;
+      }
+
+      const [content, catalog] = await Promise.all([
+        store.getContent(),
+        store.getCatalog(),
+      ]);
       let text;
       try {
-        text = getContactText(await readJsonBody(request));
+        text = getContactText(body, content, catalog);
       } catch (error) {
         sendJson(response, error.statusCode || 400, { error: error.message });
         return;
@@ -714,10 +694,9 @@ function createApplication({
 
       try {
         if (nextCatalog) {
-          await saveCatalog(nextCatalog);
+          await store.replaceCatalog(nextCatalog);
         } else {
-          await fs.rm(catalogFile, { force: true });
-          catalog = undefined;
+          await store.clearCatalog();
         }
       } catch (error) {
         console.error("Could not save site catalog.", error);
@@ -830,7 +809,7 @@ function createApplication({
       }
 
       try {
-        await saveContent(nextContent);
+        await store.setContent(nextContent);
       } catch (error) {
         console.error("Could not save site content.", error);
         sendJson(response, 500, { error: "Could not save site content." });
@@ -911,6 +890,15 @@ function createApplication({
     }
     const pathname = url.pathname;
 
+    if (pathname === "/api-docs" || pathname.startsWith("/api-docs/")) {
+      response.setHeader(
+        "Content-Security-Policy",
+        docsContentSecurityPolicy,
+      );
+      docsApplication(request, response);
+      return;
+    }
+
     if (pathname.startsWith("/api/")) {
       void handleApi(request, response, pathname).catch((error) => {
         console.error("API request failed.", error);
@@ -965,36 +953,38 @@ function createApplication({
 
   return {
     server,
-    loadContent,
-    loadCatalog,
   };
 }
 
 if (require.main === module) {
-  const port = Number(process.env.PORT || 3000);
-  const host = "0.0.0.0";
-  const { server, loadContent, loadCatalog } = createApplication({
-    adminUsername: process.env.ADMIN_USERNAME,
-    adminPassword: process.env.ADMIN_PASSWORD,
-    contentFile:
-      process.env.CONTENT_FILE || path.join(rootDirectory, "data", "content.json"),
-    secureCookies: process.env.NODE_ENV === "production",
-    catalogFile:
-      process.env.CATALOG_FILE || path.join(rootDirectory, "data", "catalog.json"),
-    telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
-    telegramChatId: process.env.TELEGRAM_CHAT_ID,
-  });
-
-  Promise.all([loadContent(), loadCatalog()])
-    .then(() => {
+  async function startServer() {
+    let pool;
+    try {
+      pool = createPool();
+      const store = createContentStore(pool);
+      const { server } = createApplication({
+        store,
+        adminUsername: process.env.ADMIN_USERNAME,
+        adminPassword: process.env.ADMIN_PASSWORD,
+        secureCookies: process.env.NODE_ENV === "production",
+        telegramBotToken: process.env.TELEGRAM_BOT_TOKEN,
+        telegramChatId: process.env.TELEGRAM_CHAT_ID,
+      });
+      await initializeDatabase(pool);
+      await assertJsonMigrationApplied(pool);
+      const port = Number(process.env.PORT || 3000);
+      const host = "0.0.0.0";
       server.listen(port, host, () => {
         console.log(`TravelHorizon server listening on http://${host}:${port}`);
       });
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error(error.message);
+      await pool?.end();
       process.exitCode = 1;
-    });
+    }
+  }
+
+  void startServer();
 }
 
-module.exports = { createApplication, normalizeContent };
+module.exports = { createApplication, normalizeCatalog, normalizeContent };

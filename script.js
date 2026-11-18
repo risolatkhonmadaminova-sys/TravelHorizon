@@ -1502,6 +1502,10 @@ function catalogField(label, field, value, options = {}) {
   if (!options.multiline) control.type = options.url ? "url" : "text";
   control.value = value || "";
   control.dataset.catalogField = field;
+  if (field === "title" || field === "alt") {
+    control.required = true;
+    control.setAttribute("aria-required", "true");
+  }
   if (options.url) control.placeholder = "https://...";
   wrapper.append(caption, control);
   return wrapper;
@@ -1698,6 +1702,49 @@ function initializeCatalogManager(csrfToken) {
     status.classList.toggle("is-error", isError);
   }
 
+  function getMissingRequiredField() {
+    for (const [kind, entries] of [
+      ["tour", catalogDraft.tours],
+      ["experience", catalogDraft.experiences],
+    ]) {
+      for (const entry of entries) {
+        for (const language of ["en", "ru", "ky"]) {
+          for (const field of ["title", "alt"]) {
+            if (!entry.fields[language][field].trim()) {
+              return { kind, id: entry.id, language, field };
+            }
+          }
+        }
+      }
+    }
+    return undefined;
+  }
+
+  function focusCatalogField({ kind, id, language, field }) {
+    const item = [...itemsContainer.querySelectorAll(".admin-catalog-item")].find(
+      (candidate) => {
+        const button = candidate.querySelector("[data-remove-catalog-item]");
+        return (
+          button?.dataset.removeCatalogItem === kind &&
+          button.dataset.catalogId === id
+        );
+      },
+    );
+    const control = [...(item?.querySelectorAll("[data-catalog-field]") || [])].find(
+      (candidate) =>
+        candidate.dataset.catalogField === field &&
+        candidate.closest("[data-catalog-language]")?.dataset.catalogLanguage ===
+          language,
+    );
+    if (!control) return;
+    let details = control.closest("details");
+    while (details) {
+      details.open = true;
+      details = details.parentElement?.closest("details");
+    }
+    control.focus();
+  }
+
   void (async () => {
     try {
       const [defaults, response] = await Promise.all([
@@ -1788,6 +1835,17 @@ function initializeCatalogManager(csrfToken) {
 
   saveButton.addEventListener("click", () => {
     if (!catalogDraft) return;
+    const missingField = getMissingRequiredField();
+    if (missingField) {
+      const languageNames = { en: "English", ru: "Russian", ky: "Kyrgyz" };
+      const fieldName = fieldLabels[missingField.field].toLowerCase();
+      focusCatalogField(missingField);
+      setStatus(
+        `${languageNames[missingField.language]} ${fieldName} is required for ${missingField.kind} "${missingField.id}".`,
+        true,
+      );
+      return;
+    }
     saveButton.disabled = true;
     setStatus("Saving listings…");
     void (async () => {
