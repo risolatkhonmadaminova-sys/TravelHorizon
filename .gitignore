@@ -21,3 +21,8 @@ npm-debug.log*
 
 # macOS files
 .DS_Store
+.neon
+
+# PostgreSQL backups
+backups/
+*.dump
